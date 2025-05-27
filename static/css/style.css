@@ -1,0 +1,537 @@
+/* Custom CSS for CPS Energy Tools */
+
+:root {
+    --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
+    --success-color: #198754;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #0dcaf0;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+    --border-radius: 0.5rem;
+    --box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    --box-shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Navigation */
+.navbar-brand {
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+.nav-link {
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    transform: translateY(-1px);
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: var(--box-shadow-lg);
+    transform: translateY(-2px);
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--primary-color), #0056b3);
+    color: white;
+    border-radius: var(--border-radius) var(--border-radius) 0 0 !important;
+    font-weight: 600;
+}
+
+/* Buttons */
+.btn {
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), #0056b3);
+    border: none;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, var(--success-color), #146c43);
+    border: none;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, var(--danger-color), #b02a37);
+    border: none;
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, var(--warning-color), #e0a800);
+    border: none;
+    color: var(--dark-color);
+}
+
+/* File Upload Areas */
+.file-upload-area {
+    border: 2px dashed #dee2e6;
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    background-color: white;
+}
+
+.file-upload-area:hover {
+    border-color: var(--primary-color);
+    background-color: #f8f9ff;
+}
+
+.file-upload-area.dragover {
+    border-color: var(--success-color);
+    background-color: #f0fff4;
+}
+
+.file-upload-icon {
+    font-size: 3rem;
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+}
+
+/* Progress Bars */
+.progress {
+    border-radius: var(--border-radius);
+    height: 1rem;
+}
+
+.progress-bar {
+    border-radius: var(--border-radius);
+}
+
+/* Tables */
+.table {
+    background-color: white;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+}
+
+.table thead th {
+    background: linear-gradient(135deg, var(--primary-color), #0056b3);
+    color: white;
+    border: none;
+    font-weight: 600;
+}
+
+.table tbody tr:hover {
+    background-color: #f8f9ff;
+}
+
+/* Issue highlighting */
+.table-row-issue {
+    background-color: #fff5f5 !important;
+    border-left: 4px solid var(--danger-color);
+}
+
+.table-row-warning {
+    background-color: #fffbf0 !important;
+    border-left: 4px solid var(--warning-color);
+}
+
+/* Loading Spinner */
+.loading-spinner {
+    display: none;
+    text-align: center;
+    padding: 2rem;
+}
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* Results Section */
+.results-section {
+    display: none;
+    margin-top: 2rem;
+}
+
+.summary-card {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-left: 4px solid var(--primary-color);
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, var(--primary-color), #0056b3);
+    color: white;
+    padding: 4rem 0;
+    margin-bottom: 3rem;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    opacity: 0.9;
+}
+
+/* Tool Cards */
+.tool-card {
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.tool-card .card-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.tool-card .btn {
+    margin-top: auto;
+}
+
+.tool-icon {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+/* Form Controls */
+.form-control, .form-select {
+    border-radius: var(--border-radius);
+    border: 1px solid #dee2e6;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* Alerts */
+.alert {
+    border-radius: var(--border-radius);
+    border: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .container-fluid {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+/* XS screens <576px */
+@media (max-width: 575.98px) {
+    .hero-title {
+        font-size: 1.5rem;
+    }
+    .hero-subtitle {
+        font-size: 0.875rem;
+    }
+    .navbar-brand {
+        font-size: 1.25rem;
+    }
+    .tool-icon {
+        font-size: 2.25rem;
+    }
+    .container-fluid {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--secondary-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
+}
+
+/* Animation Classes */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.slide-up {
+    animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Status Badges */
+.status-badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 1rem;
+    font-weight: 600;
+}
+
+.status-success {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.status-warning {
+    background-color: #fff3cd;
+    color: #664d03;
+}
+
+.status-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Data Tables */
+.data-table-container {
+    max-height: 600px;
+    overflow-y: auto;
+    overflow-x: auto;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.data-table {
+    margin-bottom: 0;
+}
+
+.data-table th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+/* Export Buttons */
+.export-buttons {
+    margin-bottom: 1rem;
+}
+
+.export-buttons .btn {
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* File Info */
+.file-info {
+    background-color: #e7f3ff;
+    border: 1px solid #b3d9ff;
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.file-info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.25rem 0;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.file-info-item:last-child {
+    border-bottom: none;
+}
+
+/* Verification Issues */
+.verification-issues {
+    margin-top: 2rem;
+}
+
+.verification-issues .list-group-item {
+    border-radius: var(--border-radius);
+    margin-bottom: 0.5rem;
+    border: 1px solid #dee2e6;
+}
+
+/* Cover Sheet Display */
+.cover-sheet-display {
+    background-color: white;
+    border: 1px solid #dee2e6;
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    font-family: 'Courier New', monospace;
+    white-space: pre-wrap;
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+/* MRR Tool Specific */
+.mrr-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.mrr-info-card {
+    background-color: white;
+    border: 1px solid #dee2e6;
+    border-radius: var(--border-radius);
+    padding: 1rem;
+}
+
+.mrr-info-card h6 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+/* Utility Classes */
+.text-muted-light {
+    color: #6c757d !important;
+}
+
+.bg-light-blue {
+    background-color: #f8f9ff !important;
+}
+
+.border-primary-light {
+    border-color: #b3d9ff !important;
+}
+
+.shadow-sm {
+    box-shadow: var(--box-shadow) !important;
+}
+
+.shadow-lg {
+    box-shadow: var(--box-shadow-lg) !important;
+}
+
+/* Navbar Scroll Effect */
+.navbar-scrolled {
+    box-shadow: var(--box-shadow-lg) !important;
+    background: rgba(13, 110, 253, 0.9) !important; /* Slight transparency for modern look */
+    backdrop-filter: blur(6px);
+}
+
+/* Tool Card Enhanced Hover */
+.tool-card:hover {
+    transform: translateY(-6px) scale(1.02);
+}
+
+/* -------------------------------------------------- */
+/* Dark Mode Overrides                                */
+/* -------------------------------------------------- */
+.dark-mode {
+    background-color: #121212;
+    color: var(--dark-color);
+}
+
+/* Re-define palette variables in dark mode */
+.dark-mode {
+    --light-color: #212529; /* inverse */
+    --dark-color: #f8f9fa;
+    --secondary-color: #adb5bd;
+    /* other color vars remain same to keep branding */
+}
+
+/* Component backgrounds */
+.dark-mode .card,
+.dark-mode .file-upload-area,
+.dark-mode .data-table-container,
+.dark-mode .cover-sheet-display {
+    background-color: #1c1c1c; /* deeper shadow-friendly surface */
+    color: var(--dark-color);
+    border: 1px solid #2e2e2e;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.85);
+}
+
+.dark-mode .table {
+    background-color: #1e1e1e;
+    color: var(--dark-color);
+}
+
+.dark-mode .table thead th {
+    background: var(--primary-color);
+}
+
+/* Alerts */
+.dark-mode .alert {
+    color: var(--dark-color);
+}
+
+/* Navbar */
+.dark-mode .navbar {
+    background-color: #0d6efd !important;
+}
+
+/* Scrollbar color tweak for dark */
+.dark-mode ::-webkit-scrollbar-track {
+    background: #2c2c2c;
+}
+
+.dark-mode ::-webkit-scrollbar-thumb {
+    background: var(--secondary-color);
+}
+
+/* Elevate on hover for better depth perception */
+.dark-mode .card:hover {
+    background-color: #222;
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.9);
+}
+
+/* Card headers: keep gradient but darken text if needed */
+.dark-mode .card-header {
+    color: var(--dark-color);
+    border-bottom: 1px solid #2e2e2e;
+}
+
+/* Pole Comparison Table custom */
+.pole-compare-table th {
+    vertical-align: middle;
+    white-space: nowrap;
+    font-size: 0.9rem;
+    padding: 0.4rem 0.6rem;
+}
+
+.pole-compare-table thead th {
+    text-align: center;
+} 

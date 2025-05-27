@@ -1,0 +1,521 @@
+{% extends "base.html" %}
+
+{% block title %}Cover Sheet Tool - CPS Energy Tools{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1>
+                        <i class="fas fa-file-alt text-primary me-3"></i>
+                        Cover Sheet Tool
+                    </h1>
+                    <p class="text-muted">Generate formatted cover sheets from SPIDAcalc JSON files</p>
+                </div>
+                <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Form -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-upload me-2"></i>Upload SPIDAcalc File
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form id="coverSheetForm" enctype="multipart/form-data">
+                        <div class="row">
+                            <!-- SPIDAcalc File Upload -->
+                            <div class="col-md-8 mx-auto">
+                                <label for="spidaFile" class="form-label">
+                                    <i class="fas fa-file-code text-info me-2"></i>SPIDAcalc JSON File
+                                </label>
+                                <div class="file-upload-area" id="spidaUploadArea">
+                                    <div class="file-upload-icon">
+                                        <i class="fas fa-file-code"></i>
+                                    </div>
+                                    <p class="mb-2">Drag and drop your SPIDAcalc JSON file here</p>
+                                    <p class="text-muted small">or click to browse</p>
+                                    <input type="file" class="form-control" id="spidaFile" name="spida_file" accept=".json" style="display: none;">
+                                </div>
+                                <div id="spidaFileInfo" class="file-info" style="display: none;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="row mt-4">
+                            <div class="col-12 text-center">
+                                <button type="submit" class="btn btn-primary btn-lg" id="processBtn" disabled>
+                                    <i class="fas fa-magic me-2"></i>Generate Cover Sheet
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div class="loading-spinner" id="loadingSpinner">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Processing...</span>
+        </div>
+        <p class="mt-3">Generating cover sheet, please wait...</p>
+    </div>
+
+    <!-- Results Section -->
+    <div class="results-section" id="resultsSection">
+        <!-- Action Buttons -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3>
+                        <i class="fas fa-file-alt me-2"></i>Generated Cover Sheet
+                    </h3>
+                    <div>
+                        <button class="btn btn-success" onclick="copyToClipboard()">
+                            <i class="fas fa-copy me-2"></i>Copy to Clipboard
+                        </button>
+                        <button class="btn btn-info" onclick="downloadAsText()">
+                            <i class="fas fa-download me-2"></i>Download as Text
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cover Sheet Display -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-document me-2"></i>Cover Sheet Data
+                        </h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="cover-sheet-display" id="coverSheetDisplay">
+                            <!-- Cover sheet content will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Information Cards -->
+        <div class="row mt-4" id="projectInfoCards">
+            <!-- Project info cards will be inserted here -->
+        </div>
+
+        <!-- Poles Table -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-table me-2"></i>Pole Data Summary
+                        </h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="data-table-container">
+                            <table class="table table-striped data-table" id="polesTable">
+                                <thead>
+                                    <tr>
+                                        <th>SCID</th>
+                                        <th>Station ID</th>
+                                        <th>Existing Loading %</th>
+                                        <th>Final Loading %</th>
+                                        <th>Notes</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="polesTableBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let currentCoverSheetData = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+    initializeFileUpload();
+    initializeForm();
+});
+
+function initializeFileUpload() {
+    setupFileUpload('spidaUploadArea', 'spidaFile', 'spidaFileInfo');
+}
+
+function setupFileUpload(uploadAreaId, fileInputId, fileInfoId) {
+    const uploadArea = document.getElementById(uploadAreaId);
+    const fileInput = document.getElementById(fileInputId);
+    const fileInfo = document.getElementById(fileInfoId);
+
+    // Click to browse
+    uploadArea.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    // File input change
+    fileInput.addEventListener('change', (e) => {
+        handleFileSelect(e.target.files[0], fileInfo);
+        checkFormValidity();
+    });
+
+    // Drag and drop events
+    uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.classList.add('dragover');
+    });
+
+    uploadArea.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+    });
+
+    uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            fileInput.files = files;
+            handleFileSelect(files[0], fileInfo);
+            checkFormValidity();
+        }
+    });
+}
+
+function handleFileSelect(file, fileInfoElement) {
+    if (file) {
+        const fileSize = (file.size / 1024 / 1024).toFixed(2); // MB
+        const fileType = file.type || 'Unknown';
+        
+        fileInfoElement.innerHTML = `
+            <div class="file-info-item">
+                <span><strong>File:</strong></span>
+                <span>${file.name}</span>
+            </div>
+            <div class="file-info-item">
+                <span><strong>Size:</strong></span>
+                <span>${fileSize} MB</span>
+            </div>
+            <div class="file-info-item">
+                <span><strong>Type:</strong></span>
+                <span>${fileType}</span>
+            </div>
+        `;
+        fileInfoElement.style.display = 'block';
+    }
+}
+
+function checkFormValidity() {
+    const spidaFile = document.getElementById('spidaFile').files[0];
+    const processBtn = document.getElementById('processBtn');
+    
+    if (spidaFile) {
+        processBtn.disabled = false;
+    } else {
+        processBtn.disabled = true;
+    }
+}
+
+function initializeForm() {
+    const form = document.getElementById('coverSheetForm');
+    form.addEventListener('submit', handleFormSubmit);
+}
+
+async function handleFormSubmit(e) {
+    e.preventDefault();
+    
+    const formData = new FormData();
+    const spidaFile = document.getElementById('spidaFile').files[0];
+    
+    formData.append('spida_file', spidaFile);
+    
+    // Show loading spinner
+    showLoading(true);
+    hideResults();
+    
+    try {
+        const response = await fetch('/api/cover-sheet', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+            currentCoverSheetData = data;
+            displayCoverSheet(data);
+        } else {
+            showError(data.error || 'An error occurred while processing the file');
+        }
+    } catch (error) {
+        showError('Network error: ' + error.message);
+    } finally {
+        showLoading(false);
+    }
+}
+
+function showLoading(show) {
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    loadingSpinner.style.display = show ? 'block' : 'none';
+}
+
+function hideResults() {
+    const resultsSection = document.getElementById('resultsSection');
+    resultsSection.style.display = 'none';
+}
+
+function showResults() {
+    const resultsSection = document.getElementById('resultsSection');
+    resultsSection.style.display = 'block';
+    resultsSection.classList.add('fade-in');
+}
+
+function showError(message) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = 'alert alert-danger alert-dismissible fade show';
+    alertDiv.innerHTML = `
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        <strong>Error:</strong> ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    const container = document.querySelector('.container');
+    container.insertBefore(alertDiv, container.firstChild);
+    
+    setTimeout(() => {
+        if (alertDiv.parentNode) {
+            alertDiv.remove();
+        }
+    }, 10000);
+}
+
+function displayCoverSheet(data) {
+    // Hide the cover sheet display area since we're using cards and table instead
+    document.getElementById('coverSheetDisplay').style.display = 'none';
+    document.getElementById('coverSheetDisplay').parentElement.parentElement.style.display = 'none';
+    
+    // Create project info cards
+    createProjectInfoCards(data);
+    
+    // Populate poles table
+    populatePolesTable(data.Poles || []);
+    
+    // Show results section
+    showResults();
+}
+
+function generateCoverSheetText(data) {
+    // Generate clean formatted text for copying/downloading
+    let text = `Job Number: ${data['Job Number'] || ''}\n`;
+    text += `Client: ${data['Client'] || ''}\n`;
+    text += `Date: ${data['Date'] || ''}\n`;
+    text += `Location: ${data['Location'] || 'Not specified'}\n`;
+    text += `City: ${data['City'] || 'Not specified'}\n`;
+    text += `Engineer: ${data['Engineer'] || ''}\n`;
+    text += `Comments: ${data['Comments'] || ''}\n`;
+    text += `\n`;
+    text += `Pole Data Summary\n`;
+    text += `Station ID\tExisting Loading %\tFinal Loading %\tNotes\n`;
+    
+    (data.Poles || []).forEach(pole => {
+        const stationId = formatStationId(pole['Station ID']) || '';
+        const existingLoading = pole['Existing Loading %'] !== null && pole['Existing Loading %'] !== undefined 
+            ? `${pole['Existing Loading %'].toFixed(1)}%` : '';
+        const finalLoading = pole['Final Loading %'] !== null && pole['Final Loading %'] !== undefined 
+            ? `${pole['Final Loading %'].toFixed(1)}%` : '';
+        const notes = pole['Notes'] || '';
+        text += `${stationId}\t${existingLoading}\t${finalLoading}\t${notes}\n`;
+    });
+    
+    return text;
+}
+
+function createProjectInfoCards(data) {
+    const container = document.getElementById('projectInfoCards');
+    
+    const projectFields = [
+        { key: 'Job Number', icon: 'fas fa-hashtag', color: 'primary' },
+        { key: 'Client', icon: 'fas fa-building', color: 'success' },
+        { key: 'Date', icon: 'fas fa-calendar', color: 'info' },
+        { key: 'Location', icon: 'fas fa-map-marker-alt', color: 'warning' },
+        { key: 'City', icon: 'fas fa-city', color: 'secondary' },
+        { key: 'Engineer', icon: 'fas fa-user-tie', color: 'dark' },
+        { key: 'Comments', icon: 'fas fa-comment', color: 'info' }
+    ];
+    
+    let cardsHtml = '';
+    
+    projectFields.forEach(field => {
+        const value = data[field.key] || 'Not specified';
+        cardsHtml += `
+            <div class="col-md-6 col-lg-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="me-3">
+                                <i class="${field.icon} fa-2x text-${field.color}"></i>
+                            </div>
+                            <div>
+                                <h6 class="card-title mb-1">${field.key}</h6>
+                                <p class="card-text mb-0">${value}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = cardsHtml;
+}
+
+function populatePolesTable(poles) {
+    const tableBody = document.getElementById('polesTableBody');
+    tableBody.innerHTML = '';
+    
+    poles.forEach((pole, index) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${pole['SCID'] || ''}</td>
+            <td>${formatStationId(pole['Station ID']) || ''}</td>
+            <td>${formatLoading(pole['Existing Loading %'])}</td>
+            <td>${formatLoading(pole['Final Loading %'])}</td>
+            <td>${pole['Notes'] || ''}</td>
+            <td>
+                <button class="btn btn-sm btn-outline-primary" onclick="copyRowToClipboard(${index})">
+                    <i class="fas fa-copy"></i> Copy
+                </button>
+            </td>
+        `;
+        tableBody.appendChild(tr);
+    });
+}
+
+function formatLoading(value) {
+    if (value === null || value === undefined || value === '') return '';
+    if (typeof value === 'number') {
+        return value.toFixed(1) + '%';
+    }
+    return value.toString();
+}
+
+function formatStationId(stationId) {
+    if (!stationId) return '';
+    
+    // Extract just the numbers after the pole prefix (e.g., "1-PL410620" -> "410620")
+    const match = stationId.match(/\d+-PL(\d+)/);
+    if (match) {
+        return match[1];
+    }
+    
+    // If no match, return the original value
+    return stationId;
+}
+
+function copyToClipboard() {
+    if (!currentCoverSheetData) {
+        showError('No cover sheet data to copy');
+        return;
+    }
+    
+    const coverSheetText = generateCoverSheetText(currentCoverSheetData);
+    
+    navigator.clipboard.writeText(coverSheetText).then(() => {
+        showSuccessMessage('Cover sheet data copied to clipboard');
+    }).catch(err => {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = coverSheetText;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        showSuccessMessage('Cover sheet data copied to clipboard');
+    });
+}
+
+function downloadAsText() {
+    if (!currentCoverSheetData) {
+        showError('No cover sheet data to download');
+        return;
+    }
+    
+    const coverSheetText = generateCoverSheetText(currentCoverSheetData);
+    const blob = new Blob([coverSheetText], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `cover_sheet_${currentCoverSheetData['Job Number'] || 'data'}_${new Date().toISOString().split('T')[0]}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+    
+    showSuccessMessage('Cover sheet downloaded successfully');
+}
+
+function showSuccessMessage(message) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = 'alert alert-success alert-dismissible fade show';
+    alertDiv.innerHTML = `
+        <i class="fas fa-check-circle me-2"></i>
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    const container = document.querySelector('.container');
+    container.insertBefore(alertDiv, container.firstChild);
+    
+    setTimeout(() => {
+        if (alertDiv.parentNode) {
+            alertDiv.remove();
+        }
+    }, 5000);
+}
+
+function copyRowToClipboard(index) {
+    if (!currentCoverSheetData || !currentCoverSheetData.Poles || !currentCoverSheetData.Poles[index]) {
+        showError('Row data not found');
+        return;
+    }
+    
+    const pole = currentCoverSheetData.Poles[index];
+    const rowText = `${pole['SCID'] || ''}\t${formatStationId(pole['Station ID'] || '')}\t${formatLoading(pole['Existing Loading %'])}\t${formatLoading(pole['Final Loading %'])}\t${pole['Notes'] || ''}`;
+    
+    navigator.clipboard.writeText(rowText).then(() => {
+        showSuccessMessage('Row data copied to clipboard');
+    }).catch(err => {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = rowText;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        showSuccessMessage('Row data copied to clipboard');
+    });
+}
+</script>
+{% endblock %} 

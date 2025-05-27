@@ -1,0 +1,38 @@
+{% if rows %}
+<div class="table-responsive">
+<table id="{{ table_id if table_id is defined else '' }}" class="table table-bordered table-hover table-sm pole-compare-table">
+    <thead class="table-light">
+        <tr>
+            <th>SCID #</th>
+            <th>SPIDA Pole #</th>
+            <th>Katapult Pole #</th>
+            <th>SPIDA Pole Spec</th>
+            <th>Katapult Pole Spec</th>
+            <th class="text-center">SPIDA<br>Existing&nbsp;%</th>
+            <th class="text-center">Katapult<br>Existing&nbsp;%</th>
+            <th class="text-center">SPIDA<br>Final&nbsp;%</th>
+            <th class="text-center">Katapult<br>Final&nbsp;%</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for row in rows %}
+        <tr>
+            <td>{{ row.scid_number }}</td>
+            <td>{{ row.spida_pole_number }}</td>
+            <td>{{ row.katapult_pole_number }}</td>
+            <td class="{% if row.spida_pole_spec != row.katapult_pole_spec %}table-danger{% endif %}">{{ row.spida_pole_spec }}</td>
+            <td class="{% if row.spida_pole_spec != row.katapult_pole_spec %}table-danger{% endif %}">{{ row.katapult_pole_spec }}</td>
+            <td class="text-center {% if row.existing_delta is defined and row.existing_delta > (threshold|default(0)) %}table-danger{% endif %}">{{ '%.2f'|format(row.spida_existing_loading) }}</td>
+            <td class="text-center {% if row.existing_delta is defined and row.existing_delta > (threshold|default(0)) %}table-danger{% endif %}">{{ '%.2f'|format(row.katapult_existing_loading) }}</td>
+            <td class="text-center {% if row.final_delta is defined and row.final_delta > (threshold|default(0)) %}table-danger{% endif %}">{{ '%.2f'|format(row.spida_final_loading) }}</td>
+            <td class="text-center {% if row.final_delta is defined and row.final_delta > (threshold|default(0)) %}table-danger{% endif %}">{{ '%.2f'|format(row.katapult_final_loading) }}</td>
+            <td>{% if row.has_issue %}<span class="badge bg-danger">Issue</span>{% else %}<span class="badge bg-success">OK</span>{% endif %}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+{% else %}
+<p class="text-muted">No data to display.</p>
+{% endif %} 

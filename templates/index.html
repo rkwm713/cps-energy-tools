@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+
+{% block title %}CPS Energy Tools - Home{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="container text-center">
+        <h1 class="hero-title">
+            <i class="fas fa-bolt me-3"></i>
+            CPS Energy Tools
+        </h1>
+        <p class="hero-subtitle">
+            Professional utility tools for pole comparison, cover sheet generation, and MRR processing
+        </p>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Tools Grid -->
+    <div class="row g-4">
+        <!-- Pole Comparison Tool -->
+        <div class="col-lg-6 col-md-6">
+            <div class="card tool-card fade-in" data-aos="fade-up">
+                <div class="card-body text-center">
+                    <div class="tool-icon">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <h5 class="card-title">Pole Comparison Tool</h5>
+                    <p class="card-text mb-4">
+                        Quickly compare Katapult Excel and SPIDAcalc JSON pole data for discrepancies.
+                    </p>
+                    <a href="{{ url_for('pole_comparison') }}" class="btn btn-primary">
+                        <i class="fas fa-arrow-right me-2"></i>Launch Tool
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cover Sheet Tool -->
+        <div class="col-lg-6 col-md-6">
+            <div class="card tool-card fade-in" data-aos="fade-up">
+                <div class="card-body text-center">
+                    <div class="tool-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h5 class="card-title">Cover Sheet Tool</h5>
+                    <p class="card-text mb-4">
+                        Generate formatted project cover sheets directly from a SPIDAcalc file.
+                    </p>
+                    <a href="{{ url_for('cover_sheet') }}" class="btn btn-primary">
+                        <i class="fas fa-arrow-right me-2"></i>Launch Tool
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- MRR Tool -->
+        <div class="col-lg-6 col-md-6">
+            <div class="card tool-card fade-in" data-aos="fade-up">
+                <div class="card-body text-center">
+                    <div class="tool-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h5 class="card-title">MRR Tool</h5>
+                    <p class="card-text mb-4">
+                        Create make-ready reports from Job JSON & GeoJSON — web or desktop.
+                    </p>
+                    <a href="{{ url_for('mrr_tool') }}" class="btn btn-primary">
+                        <i class="fas fa-arrow-right me-2"></i>Launch Tool
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- SPIDAcalc QC Tool -->
+        <div class="col-lg-6 col-md-6">
+            <div class="card tool-card fade-in" data-aos="fade-up">
+                <div class="card-body text-center">
+                    <div class="tool-icon">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                    <h5 class="card-title">SPIDAcalc QC Tool</h5>
+                    <p class="card-text mb-4">
+                        Validate pole data consistency between SPIDAcalc and Katapult.
+                    </p>
+                    <a href="{{ url_for('spidacalc_qc') }}" class="btn btn-primary">
+                        <i class="fas fa-arrow-right me-2"></i>Launch Tool
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- How To Guide -->
+        <div class="col-lg-6 col-md-6">
+            <div class="card tool-card fade-in" data-aos="fade-up">
+                <div class="card-body text-center">
+                    <div class="tool-icon">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <h5 class="card-title">How To Guide</h5>
+                    <p class="card-text">
+                        Comprehensive documentation and usage instructions for all CPS delivery tools, including troubleshooting and best practices.
+                    </p>
+                    <a href="{{ url_for('how_to_guide') }}" class="btn btn-info">
+                        <i class="fas fa-book me-2"></i>View Guide
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Start -->
+        <div class="col-lg-6 col-md-6">
+            <div class="card tool-card fade-in" data-aos="fade-up">
+                <div class="card-body text-center">
+                    <div class="tool-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h5 class="card-title">Quick Start</h5>
+                    <p class="card-text">
+                        New to CPS Energy Tools? Start here for a quick overview of features and capabilities.
+                    </p>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-success" onclick="showQuickStart()">
+                            <i class="fas fa-play me-2"></i>Get Started
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <!-- Commented out as per the instructions -->
+    <!--
+    <div class="row mt-5">
+        <div class="col-12">
+            <h2 class="text-center mb-4">Key Features</h2>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="text-center">
+                <div class="feature-icon mb-3">
+                    <i class="fas fa-upload fa-3x text-primary"></i>
+                </div>
+                <h5>File Processing</h5>
+                <p class="text-muted">Support for Excel, JSON, and GeoJSON file formats with drag-and-drop upload.</p>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="text-center">
+                <div class="feature-icon mb-3">
+                    <i class="fas fa-chart-line fa-3x text-success"></i>
+                </div>
+                <h5>Data Analysis</h5>
+                <p class="text-muted">Advanced algorithms for pole matching, discrepancy detection, and data validation.</p>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="text-center">
+                <div class="feature-icon mb-3">
+                    <i class="fas fa-download fa-3x text-info"></i>
+                </div>
+                <h5>Export Options</h5>
+                <p class="text-muted">Export results to CSV, Excel, or formatted text for easy integration with other tools.</p>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="text-center">
+                <div class="feature-icon mb-3">
+                    <i class="fas fa-shield-alt fa-3x text-warning"></i>
+                </div>
+                <h5>Reliable</h5>
+                <p class="text-muted">Built with robust error handling and validation to ensure accurate results.</p>
+            </div>
+        </div>
+    </div>
+    -->
+</div>
+
+<!-- Quick Start Modal -->
+<div class="modal fade" id="quickStartModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-rocket me-2"></i>Quick Start Guide
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-balance-scale fa-2x text-primary mb-2"></i>
+                                <h6>Pole Comparison</h6>
+                                <p class="small">Upload Katapult Excel and SPIDAcalc JSON files to compare pole data and identify discrepancies.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-file-alt fa-2x text-success mb-2"></i>
+                                <h6>Cover Sheet</h6>
+                                <p class="small">Upload a SPIDAcalc JSON file to generate a formatted cover sheet with project information.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-cogs fa-2x text-info mb-2"></i>
+                                <h6>MRR Processing</h6>
+                                <p class="small">Upload Job JSON and GeoJSON files for comprehensive MRR report generation.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>Tip:</strong> All file processing is done locally in your browser for security. Files are automatically cleaned up after processing.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a href="{{ url_for('how_to_guide') }}" class="btn btn-primary">View Full Guide</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function showQuickStart() {
+    const modal = new bootstrap.Modal(document.getElementById('quickStartModal'));
+    modal.show();
+}
+
+// Add animation delays to cards
+document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.fade-in');
+    cards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.1}s`;
+    });
+});
+</script>
+{% endblock %} 
