@@ -1,5 +1,5 @@
 import json
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Tuple, Optional
 
 # === Configuration Tables ===
 # Crossarm mapping: (max_diameter_inch) -> crossarm type
@@ -226,9 +226,9 @@ def load_json(path: str) -> Dict[str, Any]:
         return json.load(f)
 
 
-def main(spida_path: str, kata_path: str):
+def main(spida_path: str, kata_path: Optional[str] = None):
     spida = load_json(spida_path)
-    kata = load_json(kata_path)
+    kata = load_json(kata_path) if kata_path else {}
     checker = QCChecker(spida, kata)
     issues = checker.run_checks()
     if issues:
@@ -245,6 +245,6 @@ if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(description='Run QC checks on SPIDAcalc & Katapult JSONs')
     parser.add_argument('spida_json', help='Path to SPIDAcalc JSON file')
-    parser.add_argument('kata_json', help='Path to Katapult JSON file')
+    parser.add_argument('kata_json', nargs='?', default=None, help='Path to Katapult JSON file (optional)')
     args = parser.parse_args()
     main(args.spida_json, args.kata_json)

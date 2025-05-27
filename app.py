@@ -467,42 +467,151 @@ def launch_mrr_gui():
 @app.route('/api/spidacalc-qc', methods=['POST'])
 def api_spidacalc_qc():
     try:
-        if 'spida_file' not in request.files or 'katapult_file' not in request.files:
-            return jsonify({'error': 'Both SPIDAcalc JSON and Katapult JSON files are required'}), 400
+        # ------------------------------------------------------------------
+        # Validate and persist SPIDAcalc JSON (required)
+        # ------------------------------------------------------------------
+        if 'spida_file' not in request.files:
+            return jsonify({'error': 'SPIDAcalc JSON file is required'}), 400
 
         spida_file = request.files['spida_file']
-        kata_file = request.files['katapult_file']
+        if spida_file.filename == '':
+            return jsonify({'error': 'SPIDAcalc JSON file not selected'}), 400
 
-        if spida_file.filename == '' or kata_file.filename == '':
-            return jsonify({'error': 'No files selected'}), 400
-
-        if not (allowed_file(spida_file.filename) and allowed_file(kata_file.filename)):
-            return jsonify({'error': 'Invalid file types'}), 400
+        if not allowed_file(spida_file.filename):
+            return jsonify({'error': 'Invalid SPIDAcalc file type'}), 400
 
         spida_filename = secure_filename(spida_file.filename)
-        kata_filename = secure_filename(kata_file.filename)
         spida_path = os.path.join(app.config['UPLOAD_FOLDER'], spida_filename)
-        kata_path = os.path.join(app.config['UPLOAD_FOLDER'], kata_filename)
         spida_file.save(spida_path)
-        kata_file.save(kata_path)
 
-        # Load JSON data
+        # ------------------------------------------------------------------
+        # Katapult JSON is OPTIONAL – only process if included in upload
+        # ------------------------------------------------------------------
+        kata_json = {}
+        kata_path = None
+        if 'katapult_file' in request.files and request.files['katapult_file'].filename != '':
+            kata_file = request.files['katapult_file']
+
+            # Validate extension
+            if not allowed_file(kata_file.filename):
+                return jsonify({'error': 'Invalid Katapult file type'}), 400
+
+            kata_filename = secure_filename(kata_file.filename)
+            kata_path = os.path.join(app.config['UPLOAD_FOLDER'], kata_filename)
+            kata_file.save(kata_path)
+
+            # Load Katapult JSON
+            with open(kata_path, 'r', encoding='utf-8') as f:
+                kata_json = json.load(f)
+
+        # ------------------------------------------------------------------
+        # Load SPIDA JSON (always required)
+        # ------------------------------------------------------------------
         with open(spida_path, 'r', encoding='utf-8') as f:
             spida_json = json.load(f)
-        with open(kata_path, 'r', encoding='utf-8') as f:
-            kata_json = json.load(f)
 
+        # Run QC checks
         checker = QCChecker(spida_json, kata_json)
         issues_by_pole = checker.run_checks()
+
+        # ------------------------------------------------------------------
+        # Build poles list for front-end (extract id, latitude, longitude)
+        # ------------------------------------------------------------------
+        def extract_poles(spida: dict) -> list:
+            """Return a list of {id, lat, lon?} dicts pulled from the SPIDAcalc JSON.
+
+            The structure of SPIDAcalc job files can differ depending on the export
+            options that were used.  In most cases pole coordinates can be found in
+            either 1) leads → locations → mapLocation.coordinates (GeoJSON-style
+            lon/lat) or 2) the legacy nodes list with various possible latitude /‐
+            longitude keys.  This helper looks in both places and deduplicates on
+            the pole id so the front-end receives one entry per pole.
+            """
+
+            poles: list[dict] = []
+
+            # ----------------------------------------------------------
+            # 1) Modern "leads / locations" structure
+            # ----------------------------------------------------------
+            for lead in spida.get('leads', []):
+                for loc in lead.get('locations', []):
+                    label = loc.get('label') or loc.get('id') or loc.get('poleId')
+                    if not label:
+                        continue
+
+                    coords = loc.get('mapLocation', {}).get('coordinates', [])
+                    if isinstance(coords, (list, tuple)) and len(coords) == 2:
+                        lon, lat = coords
+                        try:
+                            lat = float(lat)
+                            lon = float(lon)
+                            poles.append({'id': str(label), 'lat': lat, 'lon': lon})
+                        except (TypeError, ValueError):
+                            # Coordinates present but not numeric – fall back to id only
+                            poles.append({'id': str(label)})
+                    else:
+                        # No coordinates – still record the pole id so it appears in UI
+                        poles.append({'id': str(label)})
+
+            # ----------------------------------------------------------
+            # 2) Legacy/alternate "nodes" structure
+            # ----------------------------------------------------------
+            lat_keys = ['latitude', 'lat', 'Latitude', 'y', 'northing']
+            lon_keys = ['longitude', 'lon', 'Longitude', 'x', 'easting']
+
+            for node in spida.get('nodes', []):
+                if not isinstance(node, dict):
+                    continue
+
+                pid = node.get('id') or node.get('poleId') or node.get('nodeId')
+                if not pid:
+                    continue
+
+                lat = next((node.get(k) for k in lat_keys if node.get(k) is not None), None)
+                lon = next((node.get(k) for k in lon_keys if node.get(k) is not None), None)
+
+                if lat is not None and lon is not None:
+                    try:
+                        lat_f = float(lat)
+                        lon_f = float(lon)
+                        poles.append({'id': str(pid), 'lat': lat_f, 'lon': lon_f})
+                    except (TypeError, ValueError):
+                        poles.append({'id': str(pid)})
+                else:
+                    poles.append({'id': str(pid)})
+
+            # ----------------------------------------------------------
+            # 3) Deduplicate – prefer entry that has coordinates
+            # ----------------------------------------------------------
+            unique: dict[str, dict] = {}
+            for p in poles:
+                pid = p['id']
+                if pid not in unique:
+                    unique[pid] = p
+                else:
+                    # If existing record lacks coords but new one has, replace
+                    if ('lat' in p and 'lat' not in unique[pid]):
+                        unique[pid] = p
+            return list(unique.values())
+
+        poles = extract_poles(spida_json)
+
+        # Ensure poles referenced in issues are always present
+        for pid in issues_by_pole.keys():
+            if not any(p['id'] == pid for p in poles):
+                poles.append({'id': pid})
 
         # Flatten for count
         total_issues = sum(len(lst) for lst in issues_by_pole.values())
 
-        # Clean up
+        # ------------------------------------------------------------------
+        # Clean up saved files
+        # ------------------------------------------------------------------
         os.remove(spida_path)
-        os.remove(kata_path)
+        if kata_path and os.path.exists(kata_path):
+            os.remove(kata_path)
 
-        return jsonify({'issues_by_pole': issues_by_pole, 'issues_count': total_issues})
+        return jsonify({'issues_by_pole': issues_by_pole, 'issues_count': total_issues, 'poles': poles})
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
