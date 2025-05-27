@@ -1,5 +1,42 @@
-import tkinter as tk
-from tkinter import ttk, messagebox, filedialog
+import types
+# BEGIN PATCH: Safe tkinter import for headless environments
+try:
+    import tkinter as tk
+    from tkinter import ttk, messagebox, filedialog
+except (ImportError, RuntimeError):
+    # Create minimal stubs to satisfy attribute accesses when tkinter is unavailable (e.g., in headless servers)
+    tk = types.ModuleType("tkinter_stub")
+    def _stub(*args, **kwargs):
+        return None
+    class _StubWidget:
+        def __init__(self, *args, **kwargs):
+            pass
+        def __getattr__(self, name):
+            return _stub
+        def grid(self, *args, **kwargs):
+            pass
+        def grid_remove(self, *args, **kwargs):
+            pass
+        def insert(self, *args, **kwargs):
+            pass
+        def delete(self, *args, **kwargs):
+            pass
+        def get(self, *args, **kwargs):
+            return ""
+    tk.Tk = _StubWidget
+    tk.Text = _StubWidget
+    tk.END = "end"
+    tk.W = "w"
+    # ttk & other dialogs fall back to stub widgets/functions
+    ttk = types.ModuleType("ttk_stub")
+    ttk.Label = _StubWidget
+    ttk.Entry = _StubWidget
+    ttk.Button = _StubWidget
+    messagebox = types.ModuleType("msgbox_stub")
+    filedialog = types.ModuleType("filedialog_stub")
+    filedialog.askopenfilename = _stub
+    tk.StringVar = lambda *args, **kwargs: types.SimpleNamespace(get=lambda: "", set=lambda v: None)
+# END PATCH
 import pandas as pd
 import json
 import datetime
