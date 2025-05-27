@@ -67,6 +67,16 @@ A modern web application for CPS Energy utility tools including pole comparison,
 - Processes Job JSON and GeoJSON files
 - Advanced data analysis capabilities
 
+## Detailed Command-Line Documentation
+
+For in-depth options, examples, and troubleshooting for each standalone script see the dedicated READMEs inside the `docs/` folder:
+
+- [Pole Comparison Tool](docs/pole_comparison_tool.md)
+- [Cover Sheet Tool](docs/cover_sheet_tool.md)
+- [MRR Tool](docs/mrr_tool.md)
+- [SPIDA/Katapult QC Checker](docs/spidaqc.md)
+- [How-To Guide CLI](docs/how_to_guide.md)
+
 ## Security
 
 - All file processing is done server-side
