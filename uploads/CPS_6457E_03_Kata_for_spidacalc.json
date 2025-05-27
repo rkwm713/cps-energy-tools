@@ -1,0 +1,15 @@
+{
+  "label": "CPS_6457E_03_Kata",
+  "dateModified": 1748383135403,
+  "clientFile": "TechServ_Light C_Static_Tension.client",
+  "date": "2025-05-27",
+  "schema": "/schema/spidacalc/calc/project.schema",
+  "version": 11,
+  "engineer": "Taylor Larsen",
+  "leads": [
+    {
+      "label": "Lead",
+      "locations": []
+    }
+  ]
+}

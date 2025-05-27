@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}SPIDA Import{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">SPIDA Import Tool</h1>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Import Katapult Data to SPIDAcalc Format</h5>
+            <p class="card-text">
+                This tool converts Katapult JSON data into a format compatible with SPIDAcalc.
+                Upload your Katapult JSON file to generate a SPIDAcalc-compatible JSON file.
+            </p>
+            
+            <form id="spidaImportForm" method="POST" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="katapultFile" class="form-label">Katapult JSON File</label>
+                    <input type="file" class="form-control" id="katapultFile" name="katapult_file" accept=".json" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Convert to SPIDAcalc Format</button>
+            </form>
+        </div>
+    </div>
+
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    {% if success %}
+    <div class="alert alert-success" role="alert">
+        {{ success }}
+    </div>
+    {% endif %}
+
+    {% if download_url %}
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5 class="card-title">Conversion Complete</h5>
+            <p class="card-text">Your SPIDAcalc-compatible file is ready for download.</p>
+            <a href="{{ download_url }}" class="btn btn-success" download>
+                <i class="fas fa-download"></i> Download SPIDAcalc File
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %} 

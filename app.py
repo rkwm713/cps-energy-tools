@@ -8,6 +8,9 @@ from datetime import datetime
 import io
 import zipfile
 from spidaqc import QCChecker
+import math
+from pathlib import Path
+from spida_utils import convert_katapult_to_spidacalc
 
 # Import the existing tool modules
 from pole_comparison_tool import PoleComparisonTool
@@ -615,6 +618,67 @@ def api_spidacalc_qc():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+@app.route('/spida-import', methods=['GET', 'POST'])
+def spida_import():
+    if request.method == 'POST':
+        try:
+            if 'katapult_file' not in request.files:
+                return render_template('spida_import.html', error='No file uploaded')
+            
+            file = request.files['katapult_file']
+            if file.filename == '':
+                return render_template('spida_import.html', error='No file selected')
+            
+            if not file.filename.endswith('.json'):
+                return render_template('spida_import.html', error='File must be a JSON file')
+            
+            # Save uploaded file
+            filename = secure_filename(file.filename)
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(filepath)
+            
+            # Load and process the Katapult JSON
+            job_id = os.path.splitext(filename)[0]
+            job_name = "CPS Energy Make-Ready"  # or pull from form
+            
+            try:
+                with open(filepath, 'r', encoding='utf-8') as f:
+                    kat_json = json.load(f)
+
+                spida_json = convert_katapult_to_spidacalc(kat_json, job_id, job_name)
+
+                output_filename = f"{job_id}_for_spidacalc.json"
+                output_path = os.path.join(app.config['UPLOAD_FOLDER'], output_filename)
+                with open(output_path, 'w') as out:
+                    json.dump(spida_json, out, indent=2)
+
+                return render_template('spida_import.html',
+                                    success='Converted successfully!',
+                                    download_url=url_for('download_spida_file', filename=output_filename))
+
+            except Exception as e:
+                return render_template('spida_import.html',
+                                    error=f'Conversion failed: {e}')
+            
+        except Exception as e:
+            print(f"Error processing file: {str(e)}")
+            return render_template('spida_import.html', 
+                                 error=f'Error processing file: {str(e)}')
+    
+    return render_template('spida_import.html')
+
+@app.route('/download-spida-file/<filename>')
+def download_spida_file(filename):
+    try:
+        return send_file(
+            os.path.join(app.config['UPLOAD_FOLDER'], filename),
+            as_attachment=True,
+            download_name=filename
+        )
+    except Exception as e:
+        flash(str(e), 'error')
+        return redirect(url_for('spida_import'))
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000) 
