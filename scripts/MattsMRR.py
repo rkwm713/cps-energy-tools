@@ -49,7 +49,6 @@ from cps_tools.core.mrr.excel_formatter_utils import (
     get_lowest_heights_for_connection,
     get_attachment_action,
     get_pole_structure,
-    get_proposed_guy_value,
     get_work_type,
     get_responsible_party,
     calculate_bearing # Needed for process_data logic

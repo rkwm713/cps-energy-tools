@@ -22,7 +22,6 @@ from .excel_formatter_utils import (
     get_movement_summary,
     get_short_cps_movement_summary,
     get_pole_structure,
-    get_proposed_guy_value,
     has_proposed_wires,
     get_attachment_action,
     compare_scids,
