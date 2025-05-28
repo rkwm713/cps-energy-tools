@@ -41,7 +41,7 @@ class Settings(BaseSettings):
     # ------------------------------------------------------------------
     # Web / API --------------------------------------------------------------
     # ------------------------------------------------------------------
-    cors_origins: List[str] = Field(default_factory=lambda: ["*"], description="CORS origins")
+    cors_origins: List[str] = Field(default_factory=lambda: ["http://localhost:3000", "http://localhost:5173"], description="CORS origins")
     max_upload_size_mb: int = Field(50, description="Maximum allowed upload size in MB")
 
     class Config:
@@ -58,9 +58,13 @@ class Settings(BaseSettings):
         p = Path(v) if not isinstance(v, Path) else v
         try:
             p.mkdir(parents=True, exist_ok=True)
-        except Exception:  # noqa: BLE001
-            # Fail silently – FastAPI will raise later when trying to write.
-            pass
+        except OSError as e:
+            # Log the error but don't fail - the application can still run
+            # and the error will be more apparent when file operations fail
+            print(f"Warning: Could not create upload directory {p}: {e}")
+        except Exception as e:
+            # Catch any other unexpected errors
+            print(f"Warning: Unexpected error creating upload directory {p}: {e}")
         return p
 
 
@@ -68,4 +72,4 @@ class Settings(BaseSettings):
 def get_settings() -> Settings:  # noqa: D401
     """Return a cached :class:`Settings` instance (singleton)."""
 
-    return Settings() 
+    return Settings()

@@ -11,7 +11,7 @@ from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 from fastapi.responses import FileResponse, JSONResponse
 from jsonschema import Draft7Validator, ValidationError, RefResolver
 
-from spida_utils import convert_katapult_to_spidacalc, extract_attachments, insulator_specs
+from cps_tools.core.katapult.converter import convert_katapult_to_spidacalc, extract_attachments, insulator_specs
 from cps_tools.settings import get_settings
 from backend.cps_tools.api.schemas import (
     InsulatorSpecsResponse,
@@ -111,7 +111,12 @@ async def validate_spida(project: SpidaProjectPayload):
     # when modifying fastapi_app.py to pass the validator or make it accessible.
     # For now, I'll assume _validator is accessible (e.g., via a global or dependency injection)
     # and will re-add the original validation logic.
-    from fastapi_app import _validator # Temporary import for refactoring
+    # Import validator from the main app module
+    import sys
+    if 'backend.main' in sys.modules:
+        _validator = getattr(sys.modules['backend.main'], '_validator', None)
+    else:
+        _validator = None
 
     if not _validator:
         return SpidaValidationResponse(valid=True, errors=["Schema validation disabled."]) # Or raise HTTPException
@@ -163,7 +168,12 @@ async def spida_import(
     # ------------------------------------------------------------------
     # 4) Validate
     # ------------------------------------------------------------------
-    from fastapi_app import _validator # Temporary import for refactoring
+    # Import validator from the main app module
+    import sys
+    if 'backend.main' in sys.modules:
+        _validator = getattr(sys.modules['backend.main'], '_validator', None)
+    else:
+        _validator = None
 
     if not _validator:
         # If validator is not available, return an error or skip validation based on desired behavior

@@ -1,8 +1,4 @@
-"""Temporary wrapper referencing legacy spida_utils. To be refactored."""
-
-# NOTE: This is a *first slice* of migrating logic out of the monolithic
-# `spida_utils` module.  Once the transition is complete we will delete the
-# duplicated code from the legacy module and import helpers directly here.
+"""Katapult to SPIDAcalc conversion utilities."""
 
 from __future__ import annotations
 
@@ -10,20 +6,14 @@ from datetime import datetime
 import math
 from typing import Any
 
-# Re-use small helpers from our own utils module.  `insulator_specs` remains
-# imported from the legacy module for now until its data-loading is migrated.
-from .utils import _ensure_dict, _FT_TO_M, extract_pole_details, insulator_specs  # noqa: PLC0414
+# Re-use small helpers from our own utils module
+from .utils import _ensure_dict, _FT_TO_M, extract_pole_details, insulator_specs
 
 __all__ = [
     "convert_katapult_to_spidacalc",
     "extract_attachments",
     "insulator_specs",
 ]
-
-
-# ---------------------------------------------------------------------------
-# Katapult → SPIDAcalc conversion (lifted from spida_utils with minimal edits)
-# ---------------------------------------------------------------------------
 
 
 def convert_katapult_to_spidacalc(kat_json: dict[str, Any], job_id: str, job_name: str):
@@ -41,15 +31,6 @@ def convert_katapult_to_spidacalc(kat_json: dict[str, Any], job_id: str, job_nam
         original function signature (future versions will embed it in the
         JSON as well).
     """
-
-    # --- Haversine helper --------------------------------------------------
-    def _haversine(lat1: float, lon1: float, lat2: float, lon2: float) -> float:  # noqa: WPS430 – inner fn is fine here
-        R = 6_371_000.0  # Earth radius in metres
-        phi1, phi2 = map(math.radians, (lat1, lat2))
-        dphi = math.radians(lat2 - lat1)
-        dlambda = math.radians(lon2 - lon1)
-        a = math.sin(dphi / 2) ** 2 + math.cos(phi1) * math.cos(phi2) * math.sin(dlambda / 2) ** 2
-        return 2 * R * math.atan2(math.sqrt(a), math.sqrt(1 - a))
 
     # --- Extract nodes / pole details -------------------------------------
     raw_nodes = kat_json.get("nodes") or kat_json.get("data", {}).get("nodes", {})
@@ -149,19 +130,123 @@ def convert_katapult_to_spidacalc(kat_json: dict[str, Any], job_id: str, job_nam
     return spida_project
 
 
-# ---------------------------------------------------------------------------
-# Attachment extraction (verbatim from spida_utils for now)
-# ---------------------------------------------------------------------------
-
-
 def extract_attachments(nodes: dict[str, Any], connections: dict[str, Any]) -> dict[str, list[dict[str, Any]]]:
     """Return **SCID → list[attachment]** mapping extracted from raw Katapult dictionaries.
 
-    A very direct copy of the original helper – it *will* be refactored once
-    a comprehensive test-suite is in place.
+    Each attachment is a dict with keys:
+    - height: float | None (measured height in feet)
+    - phase: str | None (e.g. "Primary", "Neutral", "Comms")
+    - onCrossarm: bool (True if attachment sits on a crossarm)
     """
-
-    from spida_utils import extract_attachments as _legacy_extract
-
-    # Delegate to legacy implementation for now – baby steps.
-    return _legacy_extract(nodes, connections) 
+    
+    # Accept lists as well – normalise to dictionaries keyed by ID
+    nodes = _ensure_dict(nodes, name="nodes")
+    connections = _ensure_dict(connections, name="connections")
+    
+    # Build node-id → SCID look-up
+    scid_for_node: dict[str, str] = {}
+    for nid, node in nodes.items():
+        scid = (
+            node.get("attributes", {}).get("scid", {}).get("value")
+            or node.get("attributes", {}).get("SCID")
+            or node.get("id")
+            or str(nid)
+        )
+        scid_for_node[str(nid)] = str(scid)
+    
+    # Initialize result
+    result: dict[str, list[dict[str, Any]]] = {scid: [] for scid in scid_for_node.values()}
+    
+    def _safe_float(val: Any) -> float | None:
+        try:
+            return float(val) if val is not None and val != '' else None
+        except (ValueError, TypeError):
+            return None
+    
+    def _infer_phase(item: dict | None) -> str | None:
+        """Best-effort guess of phase label from cable/description fields."""
+        if not item:
+            return None
+        desc = (item.get('description') or item.get('cable_type') or '').lower()
+        if 'primary' in desc:
+            return 'Primary'
+        if 'neutral' in desc:
+            return 'Neutral'
+        if 'secondary' in desc:
+            return 'Secondary'
+        if 'service' in desc:
+            return 'Service'
+        return None
+    
+    def _parse_attachment_blob(blob: dict) -> list[dict]:
+        out: list[dict] = []
+        
+        # Common place 1: direct keys
+        if {'height', 'phase', 'onCrossarm'} <= blob.keys():
+            out.append({
+                'height': _safe_float(blob.get('height')),
+                'phase': blob.get('phase'),
+                'onCrossarm': bool(blob.get('onCrossarm')),
+            })
+            return out
+        
+        # Common place 2: PhotoFirst wire list
+        pf = blob.get('photofirst_data') or {}
+        for cat in ('wire', 'equipment', 'guying'):
+            for item in pf.get(cat, {}).values():
+                h = _safe_float(item.get('_measured_height'))
+                phase = item.get('phase') or item.get('_phase') or _infer_phase(item)
+                on_arm = bool(item.get('on_crossarm') or item.get('onCrossarm'))
+                out.append({'height': h, 'phase': phase, 'onCrossarm': on_arm})
+        return out
+    
+    # Walk each connection and harvest attachments at both ends
+    for conn in connections.values():
+        for endpoint, tag in (("node_id_1", "end1"), ("node_id_2", "end2")):
+            nid = conn.get(endpoint)
+            if nid is None:
+                continue
+            scid = scid_for_node.get(str(nid))
+            if scid is None:
+                continue
+            
+            # Pattern A: attachment data stored directly on the connection
+            direct_height = conn.get(f"{tag}_height") or conn.get(f"{endpoint}_height")
+            if direct_height is not None:
+                result[scid].append({
+                    'height': _safe_float(direct_height),
+                    'phase': conn.get(f"{tag}_phase") or conn.get(f"{endpoint}_phase"),
+                    'onCrossarm': bool(conn.get(f"{tag}_onCrossarm") or conn.get(f"{endpoint}_onCrossarm")),
+                })
+            
+            # Pattern B: iterate through sections looking for photo/wire data
+            for sect in (conn.get('sections') or {}).values():
+                result[scid].extend(_parse_attachment_blob(sect))
+    
+    # Also look inside each node for attachments
+    for nid, node in nodes.items():
+        scid = scid_for_node[str(nid)]
+        result[scid].extend(_parse_attachment_blob(node))
+    
+    # Clean up: remove empty placeholders and deduplicate
+    clean: dict[str, list[dict]] = {}
+    for scid, lst in result.items():
+        # Drop completely empty records
+        filtered: list[dict] = []
+        for att in lst:
+            if att.get('height') is None and att.get('phase') is None and not att.get('onCrossarm'):
+                continue
+            filtered.append(att)
+        
+        # Simple de-dup by (height, phase, onCrossarm)
+        seen: set[tuple] = set()
+        dedup: list[dict] = []
+        for att in filtered:
+            key = (att.get('height'), att.get('phase'), att.get('onCrossarm'))
+            if key in seen:
+                continue
+            seen.add(key)
+            dedup.append(att)
+        clean[scid] = dedup
+    
+    return clean
