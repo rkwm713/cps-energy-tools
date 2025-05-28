@@ -19,10 +19,10 @@
 
 ## Important Issues Fixed ✅
 
-### 4. Frontend Package Configuration
-- **Problem**: TypeScript and build tools were in `dependencies` instead of `devDependencies`
-- **Fix**: Moved development-only packages to `devDependencies` section
-- **Impact**: Reduces production bundle size and improves dependency management
+### 4. Frontend Package Configuration & Heroku Build Fix
+- **Problem**: Heroku build failing with "tsc: not found" because build tools were in `devDependencies`
+- **Fix**: Moved build-essential packages (`typescript`, `vite`, `@vitejs/plugin-react`, `@types/react-dom`) to `dependencies` for Heroku compatibility
+- **Impact**: Fixes Heroku deployment while keeping development-only tools in `devDependencies`
 
 ### 5. Error Handling in Settings
 - **Problem**: Silent failures when creating upload directories
@@ -40,8 +40,19 @@
 - **Note**: While the 4-level parent directory resolution in spida.py is still fragile, the core import issues have been resolved
 
 ### 8. Dependency Management
-- **Fix**: Properly organized frontend dependencies
-- **Impact**: Cleaner development environment and smaller production builds
+- **Fix**: Organized frontend dependencies for both local development and Heroku deployment
+- **Impact**: Successful builds in both environments
+
+## Heroku Deployment Fix ✅
+
+### Build Dependencies Issue
+- **Root Cause**: Heroku doesn't install `devDependencies` during production builds
+- **Solution**: Moved build-critical packages to `dependencies`:
+  - `typescript` - Required for `tsc -b` command
+  - `vite` - Required for `vite build` command  
+  - `@vitejs/plugin-react` - Required for React compilation
+  - `@types/react-dom` - Required for TypeScript compilation
+- **Result**: Heroku build should now complete successfully
 
 ## Remaining Recommendations
 
@@ -63,8 +74,9 @@
 **Critical issues resolved**: 3/3 ✅
 **Important issues resolved**: 3/3 ✅
 **Security improvements**: 1/1 ✅
+**Heroku deployment**: Fixed ✅
 
-The codebase should now run without the import errors and critical failures that were identified. The most severe issues that would prevent the application from starting have been addressed.
+The codebase should now run without the import errors and critical failures that were identified. The Heroku build issue has been specifically addressed by ensuring build tools are available during the deployment process.
 
 ## Testing Recommendations
 
@@ -72,3 +84,4 @@ The codebase should now run without the import errors and critical failures that
 2. Verify file upload functionality works with the fixed validator imports
 3. Run the frontend build to confirm dependency reorganization works
 4. Check that CORS settings work with your frontend development server
+5. **Test Heroku deployment** to confirm the build completes successfully
