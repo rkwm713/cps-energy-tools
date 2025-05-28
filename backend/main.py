@@ -16,6 +16,8 @@ from typing import Any, Dict, List
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from jsonschema import Draft7Validator, RefResolver
 
 # ---------------------------------------------------------------------------
@@ -118,6 +120,41 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Mount static files (React build)
+# This assumes your React app is built into 'frontend/dist'
+# and 'frontend' is at the same level as 'backend'
+STATIC_FILES_DIR = APP_ROOT.parent / "frontend" / "dist"
+
+if STATIC_FILES_DIR.exists():
+    app.mount(
+        "/assets",
+        StaticFiles(directory=STATIC_FILES_DIR / "assets"),
+        name="react-assets",
+    )
+    # Serve static files from the root of the 'dist' directory,
+    # including index.html for the root path.
+    app.mount(
+        "/", StaticFiles(directory=STATIC_FILES_DIR, html=True), name="react-app-root"
+    )
+
+    @app.get("/{full_path:path}", include_in_schema=False)
+    async def catch_all(full_path: str):
+        """
+        Catch-all to serve index.html for client-side routing.
+        Ensures that refreshing a page or directly navigating to a
+        React route (e.g., /my-page) still loads the React app.
+        This should come AFTER specific API routes and static file mounts.
+        """
+        index_path = STATIC_FILES_DIR / "index.html"
+        if index_path.exists():
+            return FileResponse(index_path)
+        return {"message": "Frontend not found"}, 404
+else:
+    print(
+        f"[fastapi_app] WARNING – Frontend build directory not found at {STATIC_FILES_DIR}. "
+        "Frontend will not be served."
+    )
 
 # ---------------------------------------------------------------------------
 # Include modular routers from backend package (newly ported endpoints)

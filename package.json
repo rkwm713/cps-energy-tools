@@ -1,0 +1,11 @@
+{
+  "name": "cps-energy-tools-heroku",
+  "version": "1.0.0",
+  "description": "Heroku deployment configuration for CPS Energy Tools",
+  "scripts": {
+    "heroku-postbuild": "cd frontend && npm install && npm run build"
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}
