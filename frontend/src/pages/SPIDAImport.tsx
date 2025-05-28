@@ -19,7 +19,7 @@ import { spidaApi, type SpidaImportResponse, type SpidaValidationResponse, type 
 
 const SPIDAImport: React.FC = () => {
   const [katFile, setKatFile] = useState<File | null>(null)
-  const [jobName, setJobName] = useState<string>('')
+  const [jobName, _setJobName] = useState<string>('')
   const [specs, setSpecs] = useState<any[]>([])
   const [structures, setStructures] = useState<any[]>([])
   const [job, setJob] = useState<any>(null) // Consider a more specific type if possible

@@ -91,7 +91,6 @@ const Home: React.FC = () => {
           borderRadius: 2,
           mb: 6,
         }}
-        component={motion.div}
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -120,36 +119,35 @@ const Home: React.FC = () => {
         animate="show"
       >
         {tools.map(({ title, description, route, Icon }) => (
-          <MotionCard
-            key={title}
-            variants={cardVariants}
-            whileHover={{ translateY: -6, boxShadow: '0 8px 20px rgba(0,0,0,0.15)' }}
-            transition={{ type: 'spring', stiffness: 120, damping: 12 }}
-            sx={{ height: '100%', display: 'flex', flexDirection: 'column', cursor: 'pointer' }}
-            component={RouterLink as any}
-            to={route}
-          >
-            <Box sx={{ pt: 4, textAlign: 'center' }}>
-              <Icon sx={{ fontSize: 48, color: 'primary.main' }} />
-            </Box>
-            <CardContent sx={{ flexGrow: 1 }}>
-              <Typography gutterBottom variant="h5" component="h2">
-                {title}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {description}
-              </Typography>
-            </CardContent>
-            <CardActions sx={{ justifyContent: 'flex-end', px: 2, pb: 2 }}>
-              <Button size="small" variant="contained">
-                Open
-              </Button>
-            </CardActions>
-          </MotionCard>
+          <Box key={title} component={RouterLink} to={route} sx={{ textDecoration: 'none' }}>
+            <MotionCard
+              variants={cardVariants}
+              whileHover={{ translateY: -6, boxShadow: '0 8px 20px rgba(0,0,0,0.15)' }}
+              transition={{ type: 'spring', stiffness: 120, damping: 12 }}
+              sx={{ height: '100%', display: 'flex', flexDirection: 'column', cursor: 'pointer' }}
+            >
+              <Box sx={{ pt: 4, textAlign: 'center' }}>
+                <Icon sx={{ fontSize: 48, color: 'primary.main' }} />
+              </Box>
+              <CardContent sx={{ flexGrow: 1 }}>
+                <Typography gutterBottom variant="h5" component="h2">
+                  {title}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {description}
+                </Typography>
+              </CardContent>
+              <CardActions sx={{ justifyContent: 'flex-end', px: 2, pb: 2 }}>
+                <Button size="small" variant="contained">
+                  Open
+                </Button>
+              </CardActions>
+            </MotionCard>
+          </Box>
         ))}
       </MotionBox>
     </Box>
   )
 }
 
-export default Home 
+export default Home

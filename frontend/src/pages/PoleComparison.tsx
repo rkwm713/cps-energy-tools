@@ -26,7 +26,7 @@ const PoleComparison: React.FC = () => {
   const [spidaFile, setSpidaFile] = useState<File | null>(null)
   const [threshold, setThreshold] = useState<string>('5.0')
   const [result, setResult] = useState<any>(null)
-  const [error, setError] = useState<string | null>(null)
+  const [_error, setError] = useState<string | null>(null)
   const [tabIdx, setTabIdx] = useState(0)
   const [search, setSearch] = useState('')
   const notify = useNotifier()
@@ -296,4 +296,4 @@ const VerificationPanel: React.FC<VerificationPanelProps> = ({ verification }) =
       {section('Formatting Issues', (verification.formatting_issues || []).map((i: any) => `${i.poleId} – ${i.issue}`))}
     </Paper>
   )
-} 
+}
