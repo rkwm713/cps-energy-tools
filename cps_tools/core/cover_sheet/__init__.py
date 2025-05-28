@@ -36,7 +36,7 @@ import importlib.util
 import sys
 from pathlib import Path
 
-_ORIGINAL_PATH = Path(__file__).resolve().parents[3] / "cover_sheet_tool.py"
+_ORIGINAL_PATH = Path(__file__).resolve().parents[3] / "scripts" / "cover_sheet_tool.py"
 
 if _ORIGINAL_PATH.exists():
     _spec = importlib.util.spec_from_file_location("cover_sheet_tool", str(_ORIGINAL_PATH))
@@ -54,4 +54,4 @@ if _ORIGINAL_PATH.exists():
         )
 
         # Ensure ``import cover_sheet_tool`` keeps returning the same module
-        sys.modules.setdefault("cover_sheet_tool", _legacy_mod) 
+        sys.modules.setdefault("cover_sheet_tool", _legacy_mod)

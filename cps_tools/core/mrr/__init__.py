@@ -24,11 +24,11 @@ import importlib.util
 import sys
 from pathlib import Path
 
-_ORIGINAL_PATH = Path(__file__).resolve().parents[3] / "MattsMRR.py"
+_ORIGINAL_PATH = Path(__file__).resolve().parents[3] / "scripts" / "MattsMRR.py"
 
 if _ORIGINAL_PATH.exists():
     _spec = importlib.util.spec_from_file_location("MattsMRR", str(_ORIGINAL_PATH))
     if _spec and _spec.loader:
         _legacy_mod: ModuleType = importlib.util.module_from_spec(_spec)
         _spec.loader.exec_module(_legacy_mod)  # type: ignore[arg-type]
-        sys.modules.setdefault("MattsMRR", _legacy_mod) 
+        sys.modules.setdefault("MattsMRR", _legacy_mod)

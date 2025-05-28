@@ -16,7 +16,7 @@ import importlib.util
 import sys
 from pathlib import Path
 
-_ORIGINAL_PATH = Path(__file__).resolve().parents[3] / "spidaqc.py"
+_ORIGINAL_PATH = Path(__file__).resolve().parents[3] / "scripts" / "spidaqc.py"
 
 _spec = importlib.util.spec_from_file_location("spidaqc", str(_ORIGINAL_PATH))
 if _spec is None or _spec.loader is None:  # pragma: no cover
@@ -32,4 +32,4 @@ sys.modules.setdefault("spidaqc", _mod)
 
 __all__ = [
     "QCChecker",
-] 
+]
