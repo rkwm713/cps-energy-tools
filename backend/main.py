@@ -124,7 +124,7 @@ app.add_middleware(
 # Mount static files (React build)
 # This assumes your React app is built into 'frontend/dist'
 # and 'frontend' is at the same level as 'backend'
-STATIC_FILES_DIR = APP_ROOT.parent / "frontend" / "dist"
+STATIC_FILES_DIR = APP_ROOT / "frontend" / "dist"
 
 if STATIC_FILES_DIR.exists():
     app.mount(
