@@ -113,6 +113,19 @@ _build_validator()
 
 app = FastAPI(title="SPIDAcalc Importer API", version="0.1.0")
 
+@app.get("/health")
+async def health_check():
+    """Health check endpoint to verify server is running and show registered routes."""
+    routes = []
+    for route in app.routes:
+        if hasattr(route, 'methods') and hasattr(route, 'path'):
+            routes.append({"path": route.path, "methods": list(route.methods)})
+    return {
+        "status": "healthy",
+        "message": "CPS Energy Tools API is running",
+        "routes": routes
+    }
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins,
@@ -161,11 +174,12 @@ else:
 # ---------------------------------------------------------------------------
 
 try:
-    from backend.cps_tools.api import routers as _tool_routers  # noqa: WPS433 – runtime import to avoid circular
+    from cps_tools.api import routers as _tool_routers  # noqa: WPS433 – runtime import to avoid circular
 
     app.include_router(_tool_routers)
+    print("[fastapi_app] Successfully included tool routers")
 except ModuleNotFoundError:
     # If the backend package is not on the PYTHONPATH in certain legacy setups,
     # skip inclusion.  This keeps fastapi_app runnable standalone during the
     # transition period.
-    print("[fastapi_app] Warning – backend.cps_tools.api package not found; tool routers not included.")
+    print("[fastapi_app] Warning – cps_tools.api package not found; tool routers not included.")

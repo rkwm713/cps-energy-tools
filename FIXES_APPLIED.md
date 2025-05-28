@@ -85,3 +85,55 @@ The codebase should now run without the import errors and critical failures that
 3. Run the frontend build to confirm dependency reorganization works
 4. Check that CORS settings work with your frontend development server
 5. **Test Heroku deployment** to confirm the build completes successfully
+
+## Latest Fix - 2025-05-28: Resolved 503 Service Unavailable Error ✅
+
+### Problem
+API endpoints were returning 503 Service Unavailable errors with Heroku logs showing:
+- `POST /api/cover-sheet HTTP/1.1" 405 Method Not Allowed`
+- `sock=backend at=error code=H18 desc="Server Request Interrupted"`
+
+### Root Cause Analysis
+The issue was not a server crash or resource problem, but incorrect import paths in `backend/main.py`. The code was trying to import from `backend.cps_tools.api` instead of `cps_tools.api`, causing the API routers to fail loading silently.
+
+### Fixes Applied
+
+1. **Fixed Router Import Path**
+   - **Changed**: `from backend.cps_tools.api import routers as _tool_routers`
+   - **To**: `from cps_tools.api import routers as _tool_routers`
+   - **Impact**: API routes now properly register and respond to requests
+
+2. **Added Router Loading Diagnostics**
+   - Added success logging: `"[fastapi_app] Successfully included tool routers"`
+   - Updated error messages for clarity
+   - **Impact**: Better visibility into router loading status
+
+3. **Created Health Check Endpoint**
+   - Added `/health` endpoint that shows server status and all registered routes
+   - **Impact**: Easy debugging and verification of API availability
+
+4. **Created Test Script**
+   - Added `test_api_endpoints.py` for local testing
+   - Tests all API endpoints and can verify functionality with sample files
+   - **Impact**: Quick validation before deploying to Heroku
+
+### Expected Results
+- API endpoints should now return proper responses instead of 405/503 errors
+- Cover-sheet, pole-comparison, and other tools should be accessible
+- Health check endpoint provides route debugging information
+
+### Verification Commands
+```bash
+# Check health and registered routes
+curl https://cps-energy-tools-eca5b70fc3e3.herokuapp.com/health
+
+# Test cover-sheet API
+curl -X POST https://cps-energy-tools-eca5b70fc3e3.herokuapp.com/api/cover-sheet \
+  -F "spida_file=@uploads/sample.json"
+
+# Local testing
+uvicorn backend.main:app --reload
+python test_api_endpoints.py
+```
+
+**Status**: Ready for deployment and testing ✅
