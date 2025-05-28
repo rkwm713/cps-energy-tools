@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, send_file, flash, redirect, url_for, session, Response
+from flask import Flask, render_template, request, jsonify, send_file, flash, redirect, url_for, session, Response, send_from_directory
 import os
 import json
 import tempfile
@@ -11,6 +11,7 @@ from spidaqc import QCChecker
 import math
 from pathlib import Path
 from spida_utils import convert_katapult_to_spidacalc
+from flask_cors import CORS
 
 # Import the existing tool modules
 from pole_comparison_tool import PoleComparisonTool
@@ -32,15 +33,39 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # Allowed file extensions
 ALLOWED_EXTENSIONS = {'xlsx', 'xls', 'json', 'geojson'}
 
+CORS(app, resources={r"/api/*": {"origins": "*"}})
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Create a web-compatible MRR processor class
 class WebMRRProcessor:
+    """MRR processor that runs the heavy-lifting logic from MattsMRR without
+    instantiating a Tkinter GUI (which is not allowed in a Flask worker thread)."""
+
+    class _HeadlessProcessor(MattsMRR.FileProcessorGUI):
+        """Subclass that skips tk.Tk initialisation and stubs GUI widgets."""
+
+        def __init__(self):  # pylint: disable=super-init-not-called
+            # DO NOT call super().__init__ (that would create a Tk() root window)
+            import os
+
+            # Minimal attribute set required by processing helpers -------------
+            self.downloads_path = os.path.join(os.path.expanduser("~"), "Downloads")
+
+            # Stub that swallows .insert / .delete calls so logging works safely
+            class _DummyText:  # noqa: D401, pylint: disable=too-few-public-methods
+                def insert(self, *_, **__):
+                    pass
+
+                def delete(self, *_, **__):
+                    pass
+
+            self.info_text = _DummyText()
+
     def __init__(self):
-        # Create an instance of the original FileProcessorGUI to access its methods
-        # but we won't use the GUI parts
-        self.processor = MattsMRR.FileProcessorGUI()
+        # Use the headless subclass instead of the GUI class
+        self.processor = WebMRRProcessor._HeadlessProcessor()
         
     def process_files(self, job_json_path, geojson_path=None):
         """Process MRR files and return Excel file path and summary info"""
@@ -67,7 +92,82 @@ class WebMRRProcessor:
             # Create Excel file using original logic
             self.processor.create_output_excel(output_path, df, job_data)
             
-            # Generate summary info
+            # ------------------------------------------------------------
+            # Build light-weight preview structure for the front-end
+            # ------------------------------------------------------------
+            poles: dict[str, dict] = {}
+
+            for _, rec in df.iterrows():
+                node_id = rec.get('node_id_1')
+                if not node_id:
+                    continue
+
+                pole_key = str(rec.get('SCID') or rec.get('Pole #') or node_id)
+
+                # Fetch attacher info using existing helper – only main attachers
+                attachers = self.processor.get_attachers_for_node(job_data, node_id)['main_attachers']
+
+                # Try to capture coordinates from node entry
+                node_entry = job_data.get('nodes', {}).get(node_id, {})
+                lat = node_entry.get('latitude') or node_entry.get('lat')
+                lon = node_entry.get('longitude') or node_entry.get('lon')
+
+                if pole_key not in poles:
+                    poles[pole_key] = {
+                        'pole_number': rec.get('Pole #'),
+                        'scid': rec.get('SCID'),
+                        'lat': lat,
+                        'lon': lon,
+                        'attachers': []
+                    }
+
+                # If we didn't have coords yet but now found some, update
+                if lat and lon and (poles[pole_key].get('lat') is None):
+                    poles[pole_key]['lat'] = lat
+                    poles[pole_key]['lon'] = lon
+
+                poles[pole_key]['attachers'].extend(attachers)
+
+                # Also process the TO pole of this connection so every pole appears at least once
+                node_id_2 = rec.get('node_id_2')
+                if node_id_2:
+                    node2_rec = rec.copy()
+                    node2_rec['node_id_1'] = node_id_2  # reuse helper
+                    # minimal fields for pole number / scid
+                    node2_rec['Pole #'] = rec.get('To Pole Properties', {}).get('DLOC_number') or rec.get('To Pole Properties', {}).get('pole_tag')
+                    node2_rec['SCID'] = rec.get('To Pole Properties', {}).get('scid')
+                    # ------------- replicate pole add logic for node2 -------------
+                    pole_key2 = str(node2_rec.get('SCID') or node2_rec.get('Pole #') or node_id_2)
+                    node_entry2 = job_data.get('nodes', {}).get(node_id_2, {})
+                    lat2 = node_entry2.get('latitude') or node_entry2.get('lat')
+                    lon2 = node_entry2.get('longitude') or node_entry2.get('lon')
+                    if pole_key2 not in poles:
+                        poles[pole_key2] = {
+                            'pole_number': node2_rec.get('Pole #'),
+                            'scid': node2_rec.get('SCID'),
+                            'lat': lat2,
+                            'lon': lon2,
+                            'attachers': []
+                        }
+                    if lat2 and lon2 and (poles[pole_key2].get('lat') is None):
+                        poles[pole_key2]['lat'] = lat2
+                        poles[pole_key2]['lon'] = lon2
+                    poles[pole_key2]['attachers'].extend(attachers)
+
+            # De-duplicate attachers by name within each pole
+            preview = []
+            for p in poles.values():
+                seen = set()
+                uniq = []
+                for a in p['attachers']:
+                    if a['name'] in seen:
+                        continue
+                    seen.add(a['name'])
+                    uniq.append(a)
+                p['attachers'] = uniq
+                preview.append(p)
+
+            # Generate summary info (kept separate for display)
             summary = {
                 'total_connections': len(df),
                 'job_label': job_data.get('label', 'Unknown'),
@@ -77,8 +177,13 @@ class WebMRRProcessor:
                 'output_filename': output_filename,
                 'output_path': output_path
             }
-            
-            return output_path, summary
+
+            payload = {
+                'summary': summary,
+                'preview': preview
+            }
+
+            return output_path, payload
             
         except Exception as e:
             return None, {"error": str(e)}
@@ -399,11 +504,11 @@ def api_mrr_process():
             os.remove(geojson_path)
         
         if output_path:
-            # Store the output file path in session or return download info
             return jsonify({
                 'success': True,
                 'message': 'MRR processing completed successfully',
-                'summary': result,
+                'summary': result.get('summary'),
+                'preview': result.get('preview'),
                 'download_available': True
             })
         else:
@@ -679,6 +784,26 @@ def download_spida_file(filename):
     except Exception as e:
         flash(str(e), 'error')
         return redirect(url_for('spida_import'))
+
+# ---------------------------------------------------------------------------
+# React front-end in production
+# ---------------------------------------------------------------------------
+
+# Path to the React build directory (created by `npm run build` inside /frontend)
+REACT_BUILD_DIR = Path(__file__).resolve().parent / 'frontend' / 'dist'
+
+@app.route('/app', defaults={'path': ''})
+@app.route('/app/<path:path>')
+def serve_react(path):
+    """Serve the compiled React SPA (created with Vite). During development
+    this route is optional; React devserver runs separately. In production we
+    build React into frontend/dist and Flask serves those static files.
+    """
+    # If the requested resource exists, return it directly
+    if path and (REACT_BUILD_DIR / path).exists():
+        return send_from_directory(REACT_BUILD_DIR, path)
+    # Otherwise, return index.html so React Router can handle client side route
+    return send_from_directory(REACT_BUILD_DIR, 'index.html')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000) 
