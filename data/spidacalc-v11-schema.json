@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "SPIDAcalc Project Exchange v11",
+  "description": "Combined schema for SPIDAcalc v11 import/export (wrapper).\nPlace the four draft-04 schemas from the SPIDA Software open-source repo — project.schema, structure.schema, input_assemblies.schema, and results.schema — in the same directory so that $ref look-ups resolve without a network call.",
+  "allOf": [
+    { "$ref": "project.schema" },
+    { "$ref": "structure.schema" },
+    { "$ref": "input_assemblies.schema" },
+    { "$ref": "results.schema" }
+  ]
+} 

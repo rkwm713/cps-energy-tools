@@ -1,15 +1,1628 @@
 {
   "label": "CPS_6457E_03_Kata",
-  "dateModified": 1748383135403,
+  "dateModified": 1748447489556,
   "clientFile": "TechServ_Light C_Static_Tension.client",
-  "date": "2025-05-27",
+  "date": "2025-05-28",
   "schema": "/schema/spidacalc/calc/project.schema",
   "version": 11,
   "engineer": "Taylor Larsen",
   "leads": [
     {
       "label": "Lead",
-      "locations": []
+      "locations": [
+        {
+          "label": "-OJ_PMjpiNrD4UyT0JSz",
+          "poleId": "-OJ_PMjpiNrD4UyT0JSz",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJ_PMjpiNrD4UyT0JSz",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": [
+                    {
+                      "id": "-OJ_PU-d5b_qyvPLb1ox"
+                    }
+                  ]
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.40951323764607,
+              29.289827214686998
+            ]
+          }
+        },
+        {
+          "label": "-OJ_PU-d5b_qyvPLb1ox",
+          "poleId": "-OJ_PU-d5b_qyvPLb1ox",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJ_PU-d5b_qyvPLb1ox",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": [
+                    {
+                      "id": "-OJ_PMjpiNrD4UyT0JSz"
+                    },
+                    {
+                      "id": "-OJ_PUnagFevyxyI1UKq"
+                    }
+                  ]
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41019653039261,
+              29.29026606739193
+            ]
+          }
+        },
+        {
+          "label": "-OJ_PUnagFevyxyI1UKq",
+          "poleId": "-OJ_PUnagFevyxyI1UKq",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJ_PUnagFevyxyI1UKq",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": [
+                    {
+                      "id": "-OJ_PU-d5b_qyvPLb1ox"
+                    },
+                    {
+                      "id": "-OJ_P_8Z7s5gxN9tQia9"
+                    }
+                  ]
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41086440043732,
+              29.290699596316447
+            ]
+          }
+        },
+        {
+          "label": "-OJ_P_8Z7s5gxN9tQia9",
+          "poleId": "-OJ_P_8Z7s5gxN9tQia9",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJ_P_8Z7s5gxN9tQia9",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": [
+                    {
+                      "id": "-OJ_PUnagFevyxyI1UKq"
+                    },
+                    {
+                      "id": "-OJ_PcyozaoP6NUp-j7U"
+                    },
+                    {
+                      "id": "-OJj0OsdLUpBwiuyw4c7"
+                    }
+                  ]
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41150880115315,
+              29.291133942161373
+            ]
+          }
+        },
+        {
+          "label": "-OJ_PcyozaoP6NUp-j7U",
+          "poleId": "-OJ_PcyozaoP6NUp-j7U",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJ_PcyozaoP6NUp-j7U",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": [
+                    {
+                      "id": "-OJ_P_8Z7s5gxN9tQia9"
+                    },
+                    {
+                      "id": "-OJ_Q5tV9V_pOdD7pb8_"
+                    },
+                    {
+                      "id": "-OJizUfB6H37u6SrK1l9"
+                    },
+                    {
+                      "id": "-OJizVhsWFAJTepAa5_c"
+                    }
+                  ]
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41253206389233,
+              29.29174098226001
+            ]
+          }
+        },
+        {
+          "label": "-OJ_PfpGg-tghpr8rduu",
+          "poleId": "-OJ_PfpGg-tghpr8rduu",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJ_PfpGg-tghpr8rduu",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": []
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41177970426365,
+              29.291743321521214
+            ]
+          }
+        },
+        {
+          "label": "-OJ_Q5tV9V_pOdD7pb8_",
+          "poleId": "-OJ_Q5tV9V_pOdD7pb8_",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJ_Q5tV9V_pOdD7pb8_",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": [
+                    {
+                      "id": "-OJ_PcyozaoP6NUp-j7U"
+                    },
+                    {
+                      "id": "-OJ_Q7NcUVlDc3XciFjR"
+                    }
+                  ]
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41329101968132,
+              29.292220178967305
+            ]
+          }
+        },
+        {
+          "label": "-OJ_Q7NcUVlDc3XciFjR",
+          "poleId": "-OJ_Q7NcUVlDc3XciFjR",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJ_Q7NcUVlDc3XciFjR",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": [
+                    {
+                      "id": "-OJ_Q5tV9V_pOdD7pb8_"
+                    },
+                    {
+                      "id": "-OJ_QBhaCD9_C4-gzvKc"
+                    }
+                  ]
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41402393329464,
+              29.292706157055765
+            ]
+          }
+        },
+        {
+          "label": "-OJ_QBhaCD9_C4-gzvKc",
+          "poleId": "-OJ_QBhaCD9_C4-gzvKc",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJ_QBhaCD9_C4-gzvKc",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": [
+                    {
+                      "id": "-OJ_Q7NcUVlDc3XciFjR"
+                    },
+                    {
+                      "id": "-OJiwnufSPtvM_NoHu-b"
+                    }
+                  ]
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41431227076374,
+              29.292904992189495
+            ]
+          }
+        },
+        {
+          "label": "-OJ_QCSLlpz2-ePrCvai",
+          "poleId": "-OJ_QCSLlpz2-ePrCvai",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJ_QCSLlpz2-ePrCvai",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": []
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41390055167996,
+              29.293097978860857
+            ]
+          }
+        },
+        {
+          "label": "-OJ_QIPG9V_pOdD7pb8_",
+          "poleId": "-OJ_QIPG9V_pOdD7pb8_",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJ_QIPG9V_pOdD7pb8_",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": []
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41390189278447,
+              29.293322544710282
+            ]
+          }
+        },
+        {
+          "label": "-OJ_QKaoQC9V_pOdD7pb",
+          "poleId": "-OJ_QKaoQC9V_pOdD7pb",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJ_QKaoQC9V_pOdD7pb",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": []
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.4147534941467,
+              29.293179851884002
+            ]
+          }
+        },
+        {
+          "label": "-OJ_QLUJ-TR4p9hLQz72",
+          "poleId": "-OJ_QLUJ-TR4p9hLQz72",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJ_QLUJ-TR4p9hLQz72",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": [
+                    {
+                      "id": "-OJ_QN1ZoFM8EVIZXesW"
+                    },
+                    {
+                      "id": "-OJif6kQEblo9j4gD6-l"
+                    }
+                  ]
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.4154924427303,
+              29.293632491555996
+            ]
+          }
+        },
+        {
+          "label": "-OJ_QN1ZoFM8EVIZXesW",
+          "poleId": "-OJ_QN1ZoFM8EVIZXesW",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJ_QN1ZoFM8EVIZXesW",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": [
+                    {
+                      "id": "-OJ_QLUJ-TR4p9hLQz72"
+                    },
+                    {
+                      "id": "-OJicpxLlJrt3UH71TWO"
+                    }
+                  ]
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41622334468686,
+              29.2941155389155
+            ]
+          }
+        },
+        {
+          "label": "-OJ_QO1-g_v02hBjKOt6",
+          "poleId": "-OJ_QO1-g_v02hBjKOt6",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJ_QO1-g_v02hBjKOt6",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": []
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.4166132708224,
+              29.294378991748594
+            ]
+          }
+        },
+        {
+          "label": "-OJ_QOWgDX_T_o2mDHgm",
+          "poleId": "-OJ_QOWgDX_T_o2mDHgm",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJ_QOWgDX_T_o2mDHgm",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": []
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.4170052086147,
+              29.294644198298148
+            ]
+          }
+        },
+        {
+          "label": "-OJ_Q_2zQC9V_pOdD7pb",
+          "poleId": "-OJ_Q_2zQC9V_pOdD7pb",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJ_Q_2zQC9V_pOdD7pb",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": []
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41600340354763,
+              29.294392734552538
+            ]
+          }
+        },
+        {
+          "label": "-OJicpxLlJrt3UH71TWO",
+          "poleId": "-OJicpxLlJrt3UH71TWO",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJicpxLlJrt3UH71TWO",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": [
+                    {
+                      "id": "-OJ_QN1ZoFM8EVIZXesW"
+                    }
+                  ]
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41609587052585,
+              29.29432273895364
+            ]
+          }
+        },
+        {
+          "label": "-OJidRLlRxqQeggQtXCK",
+          "poleId": "-OJidRLlRxqQeggQtXCK",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJidRLlRxqQeggQtXCK",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": []
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41629122104554,
+              29.294159823367945
+            ]
+          }
+        },
+        {
+          "label": "-OJif6kQEblo9j4gD6-l",
+          "poleId": "-OJif6kQEblo9j4gD6-l",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJif6kQEblo9j4gD6-l",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": [
+                    {
+                      "id": "-OJif9T_nMiNLnIatkCE"
+                    },
+                    {
+                      "id": "-OJ_QLUJ-TR4p9hLQz72"
+                    }
+                  ]
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41501758872693,
+              29.293331187779135
+            ]
+          }
+        },
+        {
+          "label": "-OJif9T_nMiNLnIatkCE",
+          "poleId": "-OJif9T_nMiNLnIatkCE",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJif9T_nMiNLnIatkCE",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": [
+                    {
+                      "id": "-OJif6kQEblo9j4gD6-l"
+                    }
+                  ]
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41490837523243,
+              29.29354877951626
+            ]
+          }
+        },
+        {
+          "label": "-OJiwnufSPtvM_NoHu-b",
+          "poleId": "-OJiwnufSPtvM_NoHu-b",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJiwnufSPtvM_NoHu-b",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": [
+                    {
+                      "id": "-OJ_QBhaCD9_C4-gzvKc"
+                    }
+                  ]
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41404741425728,
+              29.29290134994094
+            ]
+          }
+        },
+        {
+          "label": "-OJizUfB6H37u6SrK1l9",
+          "poleId": "-OJizUfB6H37u6SrK1l9",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJizUfB6H37u6SrK1l9",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": [
+                    {
+                      "id": "-OJ_PcyozaoP6NUp-j7U"
+                    }
+                  ]
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.4124842157001,
+              29.291875540730064
+            ]
+          }
+        },
+        {
+          "label": "-OJizVhsWFAJTepAa5_c",
+          "poleId": "-OJizVhsWFAJTepAa5_c",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJizVhsWFAJTepAa5_c",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": [
+                    {
+                      "id": "-OJ_PcyozaoP6NUp-j7U"
+                    }
+                  ]
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41177974953752,
+              29.29183177123446
+            ]
+          }
+        },
+        {
+          "label": "-OJj-3rquPvao-Sn6zeB",
+          "poleId": "-OJj-3rquPvao-Sn6zeB",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJj-3rquPvao-Sn6zeB",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": []
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41264112126439,
+              29.29180562108997
+            ]
+          }
+        },
+        {
+          "label": "-OJj-FTw6Wn0_-OfbWAR",
+          "poleId": "-OJj-FTw6Wn0_-OfbWAR",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJj-FTw6Wn0_-OfbWAR",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": []
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41248634584541,
+              29.291712013156314
+            ]
+          }
+        },
+        {
+          "label": "-OJj-TXvWyjgsyrmLNbB",
+          "poleId": "-OJj-TXvWyjgsyrmLNbB",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJj-TXvWyjgsyrmLNbB",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": []
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41260295735391,
+              29.291639376173467
+            ]
+          }
+        },
+        {
+          "label": "-OJj0OsdLUpBwiuyw4c7",
+          "poleId": "-OJj0OsdLUpBwiuyw4c7",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJj0OsdLUpBwiuyw4c7",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": [
+                    {
+                      "id": "-OJ_P_8Z7s5gxN9tQia9"
+                    }
+                  ]
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41157866003552,
+              29.291208110878436
+            ]
+          }
+        },
+        {
+          "label": "-OJj1aunXfwu-9jVz-yL",
+          "poleId": "-OJj1aunXfwu-9jVz-yL",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJj1aunXfwu-9jVz-yL",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": []
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41156793176789,
+              29.29117467003474
+            ]
+          }
+        },
+        {
+          "label": "-OJj2DSZYYI4992do4SG",
+          "poleId": "-OJj2DSZYYI4992do4SG",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJj2DSZYYI4992do4SG",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": []
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41140386343739,
+              29.291116899428264
+            ]
+          }
+        },
+        {
+          "label": "-OJj2q6jHK_EzpyUmjhZ",
+          "poleId": "-OJj2q6jHK_EzpyUmjhZ",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OJj2q6jHK_EzpyUmjhZ",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": []
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41140493773491,
+              29.291072381288565
+            ]
+          }
+        },
+        {
+          "label": "-ONthXWxHg2F_kwEDXrP",
+          "poleId": "-ONthXWxHg2F_kwEDXrP",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-ONthXWxHg2F_kwEDXrP",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": []
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.40942601416363,
+              29.289765333352012
+            ]
+          }
+        },
+        {
+          "label": "-OOZIxBNMakHJSvemleq",
+          "poleId": "-OOZIxBNMakHJSvemleq",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OOZIxBNMakHJSvemleq",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": []
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41356886382995,
+              29.29237375554377
+            ]
+          }
+        },
+        {
+          "label": "-OOZJCyPmttFF_XEZ39P",
+          "poleId": "-OOZJCyPmttFF_XEZ39P",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OOZJCyPmttFF_XEZ39P",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": []
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41018228658577,
+              29.290219807428524
+            ]
+          }
+        },
+        {
+          "label": "-OOZNWx7_kwEDXrPEvVn",
+          "poleId": "-OOZNWx7_kwEDXrPEvVn",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OOZNWx7_kwEDXrPEvVn",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": []
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.4095688294694,
+              29.289862960703935
+            ]
+          }
+        },
+        {
+          "label": "-OOZUW2bGlyCTgzI09QP",
+          "poleId": "-OOZUW2bGlyCTgzI09QP",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OOZUW2bGlyCTgzI09QP",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": []
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41080398928099,
+              29.29066032422711
+            ]
+          }
+        },
+        {
+          "label": "-OOc-dXIfLM3eGmttFF_",
+          "poleId": "-OOc-dXIfLM3eGmttFF_",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OOc-dXIfLM3eGmttFF_",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": []
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41618568491727,
+              29.29409087906628
+            ]
+          }
+        },
+        {
+          "label": "-OOc-pwgClOLypfLM3eG",
+          "poleId": "-OOc-pwgClOLypfLM3eG",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OOc-pwgClOLypfLM3eG",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": []
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41426299443299,
+              29.29287105227513
+            ]
+          }
+        },
+        {
+          "label": "-OP7d1PBo-zJXbBSF6BB",
+          "poleId": "-OP7d1PBo-zJXbBSF6BB",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OP7d1PBo-zJXbBSF6BB",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": []
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41507745284709,
+              29.293366403215508
+            ]
+          }
+        },
+        {
+          "label": "-OPClUfHjS4CexIygstA",
+          "poleId": "-OPClUfHjS4CexIygstA",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OPClUfHjS4CexIygstA",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": []
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41264242467788,
+              29.29177596250832
+            ]
+          }
+        },
+        {
+          "label": "-OPCo_ePXdIpGo8ImGP1",
+          "poleId": "-OPCo_ePXdIpGo8ImGP1",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OPCo_ePXdIpGo8ImGP1",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": []
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.41155949597517,
+              29.29111658528651
+            ]
+          }
+        },
+        {
+          "label": "-OPG6ld2hXG0QGzOKIQB",
+          "poleId": "-OPG6ld2hXG0QGzOKIQB",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OPG6ld2hXG0QGzOKIQB",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": []
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.4115733651641,
+              29.291177499590784
+            ]
+          }
+        },
+        {
+          "label": "-OPGEz57QWmw6gwuDYpS",
+          "poleId": "-OPGEz57QWmw6gwuDYpS",
+          "designs": [
+            {
+              "label": "Default Design",
+              "layerType": "Measured",
+              "structure": {
+                "pole": {
+                  "id": "-OPGEz57QWmw6gwuDYpS",
+                  "agl": {
+                    "unit": "METRE",
+                    "value": 12.192
+                  },
+                  "glc": {
+                    "unit": "METRE",
+                    "value": 4.572
+                  },
+                  "anchors": [],
+                  "guys": [],
+                  "referencePoles": []
+                },
+                "wireEndPoints": [],
+                "wires": [],
+                "insulators": []
+              }
+            }
+          ],
+          "mapLocation": {
+            "coordinates": [
+              -98.410779296488,
+              29.290602196336323
+            ]
+          }
+        }
+      ]
     }
   ]
 }

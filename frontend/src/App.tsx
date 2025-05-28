@@ -7,6 +7,7 @@ import CoverSheet from './pages/CoverSheet'
 import MRRTool from './pages/MRRTool'
 import HowToGuide from './pages/HowToGuide'
 import QCChecker from './pages/QCChecker'
+import SPIDAImport from './pages/SPIDAImport'
 import { AnimatePresence, motion } from 'framer-motion'
 import Brightness4Icon from '@mui/icons-material/Brightness4'
 import Brightness7Icon from '@mui/icons-material/Brightness7'
@@ -69,6 +70,9 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ mode, onToggleMode }) => {
           <Button color="inherit" component={Link} to="/spidacalc-qc">
             QC Checker
           </Button>
+          <Button color="inherit" component={Link} to="/spidacalc-import">
+            SPIDAcalc Import
+          </Button>
         </Toolbar>
       </AppBar>
 
@@ -81,6 +85,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ mode, onToggleMode }) => {
             <Route path="/mrr-tool" element={<PageWrapper><MRRTool /></PageWrapper>} />
             <Route path="/how-to-guide" element={<PageWrapper><HowToGuide /></PageWrapper>} />
             <Route path="/spidacalc-qc" element={<PageWrapper><QCChecker /></PageWrapper>} />
+            <Route path="/spidacalc-import" element={<PageWrapper><SPIDAImport /></PageWrapper>} />
           </Routes>
         </AnimatePresence>
       </Container>

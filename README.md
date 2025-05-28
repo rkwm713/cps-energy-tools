@@ -1,168 +1,121 @@
-# CPS Energy Tools - Web Application
+# CPS Energy Tools
 
-A modern web application for CPS Energy utility tools including pole comparison, cover sheet generation, and MRR processing.
+This repository contains a suite of tools developed for CPS Energy, including a FastAPI backend, a React frontend, and various Python scripts for data processing and quality control.
 
-## Features
+## Project Structure
 
-- **Pole Comparison Tool**: Compare pole data between Katapult Excel files and SPIDAcalc JSON files
-- **Cover Sheet Tool**: Generate formatted cover sheets from SPIDAcalc files
-- **MRR Tool**: Process Job JSON and GeoJSON files (web interface + desktop GUI)
-- **How To Guide**: Comprehensive documentation and troubleshooting
+The project is organized into the following main directories:
 
-## Installation
+*   `backend/`: Contains the FastAPI application and its API routers.
+*   `frontend/`: Contains the React/TypeScript frontend application.
+*   `cps_tools/`: A Python package containing core business logic and utility modules, shared between the backend and standalone scripts.
+    *   `cps_tools/core/`: Modularized core logic for various tools (e.g., MRR, Cover Sheet, Katapult).
+    *   `cps_tools/legacy/`: Contains wrappers or older code that is being phased out but maintained for compatibility.
+    *   `cps_tools/settings.py`: Application-wide settings managed via Pydantic.
+*   `scripts/`: Standalone Python scripts and utilities.
+*   `data/`: JSON schema definitions and other static data files.
+*   `uploads/`: Directory for uploaded files and generated reports (configured via `CPS_UPLOAD_DIR`).
+*   `docs/`: Documentation for various tools.
 
-1. **Install Python 3.7+** (if not already installed)
+## Setup and Installation
 
-2. **Install required packages**:
-   ```bash
-   pip install -r requirements.txt
-   ```
+This project uses Poetry for Python dependency management and npm/Yarn for Node.js dependencies.
 
-3. **Run the application**:
-   ```bash
-   python app.py
-   ```
+### Prerequisites
 
-4. **Open your browser** and navigate to:
-   ```
-   http://localhost:5000
-   ```
+*   Python 3.9+
+*   Node.js (LTS recommended)
+*   Poetry (install with `pip install poetry`)
 
-## Usage
+### Backend Setup
 
-### Web Interface
-- Navigate to `http://localhost:5000` in your browser
-- Select the tool you want to use from the home page
-- Upload your files using drag-and-drop or file browser
-- Process files and view/export results
+1.  **Install Python Dependencies:**
+    ```bash
+    poetry install
+    ```
+2.  **Activate Poetry Shell (optional, but recommended):**
+    ```bash
+    poetry shell
+    ```
+    (You will need to run subsequent Python commands from within this shell, or prefix them with `poetry run`.)
 
-### Desktop GUI (MRR Tool)
-- For full MRR processing capabilities, use the "Launch Desktop GUI" option
-- This provides complete Excel report generation and advanced data analysis
+### Frontend Setup
 
-## File Support
+1.  **Navigate to the frontend directory:**
+    ```bash
+    cd frontend
+    ```
+2.  **Install Node.js Dependencies:**
+    ```bash
+    npm install
+    # or yarn install
+    ```
+3.  **Return to the project root:**
+    ```bash
+    cd ..
+    ```
 
-- **Excel Files**: `.xlsx`, `.xls` (Katapult data)
-- **JSON Files**: `.json` (SPIDAcalc and Job data)
-- **GeoJSON Files**: `.json`, `.geojson` (Geographic data)
-- **Maximum file size**: 50 MB per file
+## Running the Applications
 
-## Tools Overview
+### Running the FastAPI Backend
 
-### Pole Comparison Tool
-- Compares pole data between Katapult and SPIDAcalc systems
-- Identifies loading discrepancies and specification mismatches
-- Exports results to CSV format
-- Configurable threshold for issue detection
+The FastAPI application is now centralized in `backend/main.py`.
 
-### Cover Sheet Tool
-- Extracts project information from SPIDAcalc files
-- Generates formatted cover sheets for documentation
-- Copy to clipboard or download as text file
-- Visual project information cards
-
-### MRR Tool
-- **Web Interface**: Basic file validation and information extraction
-- **Desktop GUI**: Full MRR processing with Excel report generation
-- Processes Job JSON and GeoJSON files
-- Advanced data analysis capabilities
-
-## Detailed Command-Line Documentation
-
-For in-depth options, examples, and troubleshooting for each standalone script see the dedicated READMEs inside the `docs/` folder:
-
-- [Pole Comparison Tool](docs/pole_comparison_tool.md)
-- [Cover Sheet Tool](docs/cover_sheet_tool.md)
-- [MRR Tool](docs/mrr_tool.md)
-- [SPIDA/Katapult QC Checker](docs/spidaqc.md)
-- [How-To Guide CLI](docs/how_to_guide.md)
-
-## Security
-
-- All file processing is done server-side
-- Uploaded files are automatically cleaned up after processing
-- No data is stored permanently on the server
-- Files are processed in isolated temporary directories
-
-## Troubleshooting
-
-### Common Issues
-
-1. **File Upload Fails**
-   - Check file size (must be under 50 MB)
-   - Verify file format is supported
-   - Check internet connection
-
-2. **Processing Errors**
-   - Verify file format and structure
-   - Check for missing required columns/fields
-   - Ensure data is properly formatted
-
-3. **No Results**
-   - Check if files contain expected data structure
-   - Verify pole IDs match between files
-   - Review file format requirements
-
-4. **Performance Issues**
-   - Use smaller files when possible
-   - Close other browser tabs to free memory
-   - Consider using desktop GUI for large files
-
-### Getting Help
-
-- Use the built-in "How To Guide" for detailed documentation
-- Check file format specifications
-- Ensure your data meets the requirements
-
-## Development
-
-### Project Structure
-```
-cps-energy-tools/
-├── app.py                 # Main Flask application
-├── templates/             # HTML templates
-│   ├── base.html         # Base template
-│   ├── index.html        # Home page
-│   ├── pole_comparison.html
-│   ├── cover_sheet.html
-│   ├── mrr_tool.html
-│   └── how_to_guide.html
-├── static/               # Static files
-│   ├── css/
-│   │   └── style.css    # Main stylesheet
-│   └── js/
-│       └── pole_comparison.js
-├── uploads/              # Temporary file uploads
-├── pole_comparison_tool.py
-├── cover_sheet_tool.py
-├── how_to_guide.py
-├── MattsMRR.py
-└── requirements.txt
-```
-
-### Running in Development Mode
 ```bash
-export FLASK_ENV=development  # Linux/Mac
-set FLASK_ENV=development     # Windows
-python app.py
+uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
+```
+This will start the backend server, typically accessible at `http://localhost:8000`.
+
+### Running the React Frontend
+
+1.  **Navigate to the frontend directory:**
+    ```bash
+    cd frontend
+    ```
+2.  **Start the development server:**
+    ```bash
+    npm run dev
+    # or yarn dev
+    ```
+    This will usually open the frontend in your browser at `http://localhost:5173` (or another available port).
+3.  **Return to the project root:**
+    ```bash
+    cd ..
+    ```
+
+## Key Tools and Functionality
+
+### MRR Tool (Material Reconciliation Report)
+
+*   **GUI Version:** Located at `scripts/MattsMRR.py`. This is a standalone Tkinter application for generating MRR reports.
+    ```bash
+    python scripts/MattsMRR.py
+    ```
+*   **API Version:** Exposed via the FastAPI backend at `/api/mrr-process`. This endpoint uses the same core logic as the GUI version but provides a programmatic interface for file uploads and report generation.
+
+### SPIDA QC Checker
+
+*   **CLI Tool:** Located at `scripts/spidaqc.py`. This script performs quality control checks on SPIDAcalc and Katapult JSON files.
+    ```bash
+    python scripts/spidaqc.py <path_to_spida_json> [path_to_kata_json]
+    ```
+
+### Other Scripts
+
+The `scripts/` directory contains other utilities like `cover_sheet_tool.py`, `pole_comparison_tool.py`, etc. Refer to their individual docstrings or comments for specific usage.
+
+## Configuration
+
+Application settings are managed via `cps_tools/settings.py` using Pydantic. You can override default settings using environment variables prefixed with `CPS_` (e.g., `CPS_UPLOAD_DIR`) or by creating a `.env` file in the project root.
+
+Example `.env` file:
+```
+CPS_DEBUG=True
+CPS_UPLOAD_DIR=./my_custom_uploads
+CPS_CORS_ORIGINS=["http://localhost:5173", "http://127.0.0.1:5173"]
 ```
 
-### Running in Production
-- Use a production WSGI server like Gunicorn
-- Set up proper environment variables
-- Configure reverse proxy (nginx/Apache)
-- Enable HTTPS
+## Development Notes
 
-## License
-
-© 2024 CPS Energy Tools. All rights reserved.
-
-## Original Tools
-
-This web application is based on the existing Python command-line tools:
-- `pole_comparison_tool.py`
-- `cover_sheet_tool.py`
-- `how_to_guide.py`
-- `MattsMRR.py`
-
-The web interface preserves all original functionality while providing a modern, user-friendly interface. 
+*   **Code Style:** (Consider adding details about Black, Flake8, ESLint, Prettier if used)
+*   **Testing:** (Mention `pytest` for backend, Jest/React Testing Library for frontend, and how to run tests if applicable)

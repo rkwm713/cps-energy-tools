@@ -1,0 +1,1730 @@
+[
+  {
+    "size": "13.2 kV Horizontal Line Post Insulator (8\" Bracket)",
+    "type": "BRACKET",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "1.11205540381512500E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "3.30200000000000000E-1"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "1.52400000000000000E-1"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "2.40340164480000000E-2"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "2.22411080763025000E1"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "2.27417351616000000E-2"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "13.2 kV Horizontal Line Post Insulator (9\" Bracket)",
+    "type": "BRACKET",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "1.11205540381512500E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "3.30200000000000000E-1"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "1.52400000000000000E-1"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "2.40340164480000000E-2"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "2.22411080763025000E1"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "2.27417351616000000E-2"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "13.2 kV Pin Type Insulator (16\" Bracket Double Insulator)",
+    "type": "BRACKET",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "1.11205540381512500E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "5.58800000000000100E-1"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "2.28600000000000000E-1"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "2.60379350208000000E-2"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "4.44822161526050000E0"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "2.12004737279999900E-2"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "13.2 kV Pin Type Insulator (16\" Bracket)",
+    "type": "BRACKET",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "1.11205540381512500E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "4.06400000000000000E-1"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "1.01600000000000000E-1"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "2.60379350208000000E-2"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "4.44822161526050000E0"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "2.12004737279999900E-2"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "13.2 kV Pin Type Insulator (Crossarm)",
+    "type": "PIN",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "1.11205540381512500E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "0.00000000000000000E0"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "1.27000000000000000E-1"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "8.61861502080000200E-3"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "4.44822161526050000E0"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "8.61861502080000200E-3"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "13.2 kV Pin Type Insulator (Pole Top)",
+    "type": "POLE_TOP",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "1.33446648457815000E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "2.54000000000000020E-2"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "2.47650000000000040E-1"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "2.34115660799999980E-2"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "2.63779541784947650E1"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "2.01599596800000020E-2"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "13.2 kV Post Insulator (16\" Bracket Double Insulator)",
+    "type": "BRACKET",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "1.11205540381512500E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "5.58800000000000100E-1"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "2.79400000000000000E-1"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "3.04814874240000000E-2"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "4.44822161526050000E0"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "2.79034280640000000E-2"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "13.2 kV POST Insulator (16\" Bracket)",
+    "type": "BRACKET",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "1.11205540381512500E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "6.09600000000000100E-1"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "1.77800000000000000E-1"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "2.33836951680000000E-2"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "4.44822161526050000E0"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "2.91901351680000000E-2"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "13.2 kV Post Insulator (16\" Bracket)",
+    "type": "BRACKET",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "1.11205540381512500E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "6.09600000000000100E-1"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "1.77800000000000000E-1"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "2.33836951680000000E-2"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "4.44822161526050000E0"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "2.91901351680000000E-2"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "13.2 kV POST Insulator (Crossarm)",
+    "type": "PIN",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "1.24550205227294000E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "0.00000000000000000E0"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "2.09550000000000040E-1"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "2.44334995200000020E-2"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "5.99620273737115400E1"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "2.44334995200000020E-2"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "13.2 kV Post Insulator (Crossarm)",
+    "type": "PIN",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "1.11205540381512500E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "0.00000000000000000E0"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "2.28600000000000000E-1"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "2.03225400000000000E-2"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "4.44822161526050000E0"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "2.03225400000000000E-2"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "13.2 kV POST Insulator (Pole Top)",
+    "type": "POLE_TOP",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "1.24550205227294000E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "3.81000000000000100E-2"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "3.36550000000000070E-1"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "3.49315430400000000E-2"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "7.93117914000947000E1"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "3.45599308800000000E-2"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "13.2 kV Post Insulator (Pole Top)",
+    "type": "POLE_TOP",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "1.11205540381512500E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "2.54000000000000000E-2"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "5.58800000000000100E-1"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "3.96788883840000000E-2"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "4.44822161526050000E0"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "3.96788883840000000E-2"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "14\" Spacer Bracket",
+    "type": "BRACKET",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "1.11205540381512500E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "3.55600000000000000E-1"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "0.00000000000000000E0"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "2.52900655488000000E-2"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "4.44822161526050000E0"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "1.35480503231999900E-2"
+    },
+    "shape": "SQUARE",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "15 kV Dead End Insulator",
+    "type": "DEADEND",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "3.50030558904848700E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "3.30200000000000000E-1"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "0.00000000000000000E0"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "5.20257024000000000E-3"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "1.15653761996773000E1"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "1.93238323200000000E-2"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "15 kV Dead End Insulator w/ 14\" Extension Link",
+    "type": "DEADEND",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "3.50030558904848700E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "6.85800000000000100E-1"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "0.00000000000000000E0"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "1.08696556800000000E-2"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "2.18852503470816600E1"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "1.93238323200000000E-2"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "15 kV Running Angle Insulator",
+    "type": "RUNNING_ANGLE",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "3.50030558904848700E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "3.30200000000000000E-1"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "0.00000000000000000E0"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "5.20257024000000000E-3"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "1.15653761996773000E1"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "1.93238323200000000E-2"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "15 kV Running Angle Insulator w/ 14\" Extension Link",
+    "type": "RUNNING_ANGLE",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "3.50030558904848700E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "6.85800000000000100E-1"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "0.00000000000000000E0"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "1.08696556800000000E-2"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "2.18852503470816600E1"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "1.93238323200000000E-2"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "15 kV Suspension (x2) Swinging Angle Bracket",
+    "type": "BRACKET",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "2.22411080763025000E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "5.84200000000000000E-1"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-3.55600000000000000E-1"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "3.56747673600000000E-2"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "5.04428331170540700E1"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "5.22579600000000000E-2"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "24.9 kV Dead End Insulator",
+    "type": "DEADEND",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "6.67233242289075000E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "9.14400000000000100E-1"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "0.00000000000000000E0"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "2.35481335488000000E-2"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "4.44822161526050000E0"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "4.56061023360000100E-3"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "24.9 kV Horizontal Line Post Insulator (8\" Bracket)",
+    "type": "BRACKET",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "2.22411080763025000E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "3.30200000000000000E-1"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "1.52400000000000000E-1"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "2.40340164480000000E-2"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "2.22411080763025000E1"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "2.27417351616000000E-2"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "24.9 kV Pin Type Insulator (16\" Bracket)",
+    "type": "BRACKET",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "2.22411080763025000E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "5.33400000000000100E-1"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "1.52400000000000000E-1"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "3.97067592960000000E-2"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "4.44822161526050000E0"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "3.48692980032000000E-2"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "24.9 kV Pin Type Insulator (Crossarm)",
+    "type": "PIN",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "2.22411080763025000E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "0.00000000000000000E0"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "1.01600000000000000E-1"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "2.08019196864000000E-2"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "4.44822161526050000E0"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "2.08019196864000000E-2"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "24.9 kV Pin Type Insulator (Pole Top)",
+    "type": "POLE_TOP",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "2.22411080763025000E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "2.54000000000000000E-2"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "4.82600000000000100E-1"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "4.01564100096000000E-2"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "4.44822161526050000E0"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "4.01564100096000000E-2"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "24.9 kV Post Insulator (Crossarm)",
+    "type": "PIN",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "2.22411080763025000E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "0.00000000000000000E0"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "2.28600000000000000E-1"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "2.03225400000000000E-2"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "4.44822161526050000E0"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "2.03225400000000000E-2"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "24.9 kV Post Insulator (Pole Top)",
+    "type": "POLE_TOP",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "2.22411080763025000E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "2.54000000000000000E-2"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "5.58800000000000100E-1"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "3.96788883840000000E-2"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "4.44822161526050000E0"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "3.96788883840000000E-2"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "24.9 kV Running Angle Insulator",
+    "type": "RUNNING_ANGLE",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "2.22411080763025000E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "8.38200000000000200E-1"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "0.00000000000000000E0"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "4.14347558400000000E-2"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "4.44822161526050000E0"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "1.82415119040000000E-2"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "3 Bolt Clamp",
+    "type": "CLAMP",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "1.55687756534117500E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "0.00000000000000000E0"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "0.00000000000000000E0"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "5.94579456000000000E-4"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "4.44822161526050000E0"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "2.45264025600000000E-3"
+    },
+    "shape": "SQUARE",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "3\" Clevis Insulator",
+    "type": "CLAMP",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "1.33446648457815000E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "0.00000000000000000E0"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "0.00000000000000000E0"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "5.80644000000000000E-3"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "1.17433050642877200E1"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "5.80644000000000000E-3"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "3\" Spool Bolt Offset",
+    "type": "BRACKET",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "1.33446648457815000E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "4.57200000000000000E-1"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "0.00000000000000000E0"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "5.80644000000000000E-3"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "4.09236388603966000E1"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "5.80644000000000000E-3"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "3\" Spool Tangent",
+    "type": "CLAMP",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "1.33446648457815000E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "0.00000000000000000E0"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "0.00000000000000000E0"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "5.80644000000000000E-3"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "5.33786593831260000E0"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "5.80644000000000000E-3"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "4' Pin Extension (Pole Top)",
+    "type": "POLE_TOP",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "1.11205540381512500E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "2.54000000000000000E-2"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "1.21920000000000000E0"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "1.39354560000000000E-1"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "4.44822161526050000E0"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "1.39354560000000000E-1"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "Communication D/E",
+    "type": "DEADEND",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "4.44822161526050040E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "2.28600000000000000E-1"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "0.00000000000000000E0"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "6.87482495999999900E-3"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "8.89644323052100100E0"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "3.71612160000000000E-4"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "Neutral - Angle Clamp",
+    "type": "RUNNING_ANGLE",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "5.33786593831260000E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "2.09550000000000000E-1"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "0.00000000000000000E0"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "7.98966144000000000E-3"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "2.40203967224067000E1"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "9.66191616000000000E-3"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "Neutral - D/E Clamp",
+    "type": "DEADEND",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "6.67233242289075000E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "2.28600000000000000E-1"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "0.00000000000000000E0"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "6.87482495999999900E-3"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "8.89644323052100100E0"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "3.71612160000000000E-4"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  },
+  {
+    "size": "Neutral Clamp - w/ Swinging Angle Bracket",
+    "type": "BRACKET",
+    "strength": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "3.11375513068235000E4"
+    },
+    "horizontalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "3.04800000000000000E-1"
+    },
+    "verticalOffset": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-2.28600000000000000E-1"
+    },
+    "lateralArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "1.84877049600000000E-2"
+    },
+    "weight": {
+      "unit": {
+        "unit": "NEWTON"
+      },
+      "value": "3.20271956298756000E1"
+    },
+    "poleSideArea": {
+      "unit": {
+        "unit": "SQUARE_METRE"
+      },
+      "value": "6.17805216000000100E-3"
+    },
+    "shape": "ROUND",
+    "throughHoleDiameter": {
+      "unit": {
+        "unit": "METRE"
+      },
+      "value": "-1.58750000000000020E-3"
+    },
+    "aliases": null
+  }
+]

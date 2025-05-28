@@ -1,0 +1,1 @@
+'''Backend package – entrypoint and FastAPI routers will live here.''' 

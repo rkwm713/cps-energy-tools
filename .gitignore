@@ -3,3 +3,15 @@
 /.venv
 /__pycache__
 .env
+# Poetry, builds & tooling
+/dist/
+/build/
+/.pytest_cache/
+/.mypy_cache/
+/.ruff_cache/
+/.coverage
+*.py[cod]
+__pycache__/
+# IDEs
+.vscode/
+.idea/

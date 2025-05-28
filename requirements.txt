@@ -1,9 +1,0 @@
-Flask>=2.0.0
-pandas>=2.0.0
-xlsxwriter>=1.2.0
-Werkzeug>=2.0.0
-openpyxl>=3.0.0
-requests>=2.25.0
-flask-cors>=4.0.0
-# tkinter is included with standard Python installations 
-gunicorn>=21.2.0 
