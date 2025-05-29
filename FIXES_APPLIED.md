@@ -1,81 +1,75 @@
-# Fixes Applied to CPS Energy Tools
+# API Route Fixes
 
-## Issue: 405 Method Not Allowed for API Endpoints (2025-05-29)
+## Problem Identified
 
-### Problem
-- Website loads successfully but POST requests to `/api/pole-comparison` return 405 Method Not Allowed
-- API routes were not being registered properly on Heroku deployment
+The application was experiencing `405 Method Not Allowed` errors on several key API endpoints:
 
-### Root Causes Identified
-1. **Import Path Issue**: The import path `backend.cps_tools.api` was failing because of module resolution differences between local and Heroku environments
-2. **Route Registration Order**: API routes were being registered AFTER static file mounts, causing them to be shadowed by the catch-all route
+```
+POST /api/mrr-process - 405 Method Not Allowed
+POST /api/spida-import - 405 Method Not Allowed  
+POST /api/pole-comparison - 405 Method Not Allowed
+```
 
-### Fixes Applied
+## Root Causes
 
-1. **Fixed Import Path** (backend/main.py):
-   - Changed from: `from backend.cps_tools.api import routers`
-   - Changed to: `from .cps_tools.api import routers` (relative import)
-   - This ensures proper module resolution when running as `backend.main:app`
+The investigation revealed two primary issues:
 
-2. **Reordered Route Registration** (backend/main.py):
-   - Moved API router inclusion to happen BEFORE static file mounting
-   - This prevents the catch-all route from intercepting API requests
-   - Added comments to clarify the importance of registration order
+1. **Inconsistent Router Prefix Configuration:**
+   - In `mrr_process.py` and `spida.py`, the router was correctly defined with `prefix="/api"` but then endpoints were defined with paths like `/mrr-process`
+   - In `pole_compare.py`, the router was defined without a prefix (`router = APIRouter()`) but then the endpoint was defined with the full path `/api/pole-comparison` 
+   - This inconsistency led to route registration conflicts
 
-3. **Enhanced Error Handling** (backend/main.py):
-   - Added detailed error messages for import failures
-   - Added a generic Exception handler to catch any import errors
-   - This provides better debugging information in logs
+2. **Double Registration of Routers:**
+   - In `backend/main.py`, the MRR router was being registered twice:
+     - Once through the combined router: `app.include_router(_tool_routers)`
+     - And again directly: `app.include_router(mrr_process.router)`
+   - This double registration caused routing conflicts where FastAPI couldn't properly match request paths
 
-### Testing
-- Created `test_heroku_deployment.py` to verify:
-  - Health endpoint is accessible and shows registered routes
-  - POST method is allowed on `/api/pole-comparison` endpoint
+## Fixes Applied
 
-### Deployment Steps
-1. Commit the changes to backend/main.py
-2. Push to Heroku: `git push heroku main`
-3. Monitor logs: `heroku logs --tail`
-4. Run test script: `python test_heroku_deployment.py`
+1. **Standardized Router Configurations:**
+   - Updated `pole_compare.py` to use `router = APIRouter(prefix="/api")` like the other routers
+   - Fixed route path in `pole_compare.py` to use just `/pole-comparison` instead of `/api/pole-comparison`
+   - This ensures consistent route registration patterns across all routers
 
-### Verification
-After deployment, the following should work:
-- Health check at `/health` should list all API routes
-- POST requests to `/api/pole-comparison` should not return 405
-- All other API endpoints should be accessible
+2. **Eliminated Double Registration:**
+   - Removed the direct inclusion of the MRR router from `backend/main.py`
+   - Kept only the combined router inclusion via `app.include_router(_tool_routers)`
+   - This ensures each router is registered exactly once
 
-## Issue: 404 Not Found on Page Refresh (2025-05-29)
+3. **Added Diagnostic Endpoints:**
+   - Added debug endpoints to each router to help with testing and troubleshooting:
+     - `/api/mrr-debug` and `/api/mrr-routes` 
+     - `/api/spida-debug` and `/api/spida-routes`
+     - `/api/pole-compare-debug` and `/api/pole-compare-routes`
+   - Added a global route listing endpoint to the main app: `/debug-all-routes`
 
-### Problem
-- When users refresh the page on any route (e.g., `/pole-comparison`), the server returns `{"detail":"Not Found"}`
-- This is a classic Single Page Application (SPA) routing issue
+4. **Created Testing Script:**
+   - Developed `test_fixed_endpoints.py` to verify the fixes are working
+   - The script tests various endpoints to ensure they respond with the correct status codes
+   - Specifically checks that previously problematic endpoints no longer return 405 errors
 
-### Root Cause
-- The root static mount (`app.mount("/", StaticFiles(...))`) was intercepting all requests before they could reach the catch-all route
-- When refreshing on `/pole-comparison`, the static file handler looked for a file at that path, didn't find it, and returned 404
+## How to Test
 
-### Fix Applied (backend/main.py)
+To verify the fixes have been properly applied, run:
 
-1. **Removed Root Static Mount**:
-   - Removed the problematic `app.mount("/", StaticFiles(...))` that was intercepting all requests
-   - Kept only the `/assets` mount for serving static assets
+```bash
+python test_fixed_endpoints.py
+```
 
-2. **Updated Catch-All Route**:
-   - Modified the `catch_all` function to properly handle SPA routing
-   - The new logic:
-     - First checks if the requested path is an actual static file (like `cps-tools-logo.svg`)
-     - If it's a file, serves the file directly
-     - If it's not a file, serves `index.html` to let React Router handle client-side routing
+This will check:
+1. Health endpoint functionality
+2. Route debugging endpoints
+3. The problematic API endpoints to ensure they now accept POST requests correctly
 
-### Result
-- Refreshing on any route (e.g., `/pole-comparison`) now correctly serves `index.html`
-- React Router takes over and displays the appropriate component
-- Static files like logos and favicons continue to work correctly
-- API endpoints remain unaffected
+The script should report all tests passing if the fixes have been successfully applied.
 
-### Testing
-After deployment, verify:
-1. Navigate to `/pole-comparison` and refresh the page - should load correctly
-2. Direct navigation to any route should work
-3. Static files like `/cps-tools-logo.svg` should still load
-4. API endpoints should continue functioning normally
+## Note for Deployment
+
+After applying these fixes, you'll need to:
+
+1. Deploy the updated code to your server (Heroku in this case)
+2. Run the test script against your deployed instance to confirm all routes are working correctly
+3. Monitor your logs to ensure no more 405 errors appear
+
+The changes made were targeted and minimal, focusing only on the routing configuration without modifying any business logic, so the risk of regressions should be low.

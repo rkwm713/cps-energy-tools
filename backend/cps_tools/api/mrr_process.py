@@ -98,7 +98,19 @@ async def mrr_process_api(
 @router.get("/mrr-debug")
 async def mrr_debug():
     """Debug endpoint to check if the router is working correctly."""
-    return {"status": "ok", "message": "MRR debug endpoint is working"}
+    return {"status": "ok", "message": "MRR debug endpoint is working", "route": "/api/mrr-debug"}
+
+@router.get("/mrr-routes")
+async def mrr_routes():
+    """Return all routes registered on this router for debugging."""
+    routes = []
+    for route in router.routes:
+        routes.append({
+            "path": f"/api{route.path}",  # Include the prefix
+            "name": route.name,
+            "methods": list(route.methods) if hasattr(route, "methods") else []
+        })
+    return {"routes": routes}
 
 @router.get("/download-mrr/{filename}")
 async def download_mrr_file(filename: str):

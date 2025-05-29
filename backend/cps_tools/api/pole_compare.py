@@ -21,7 +21,7 @@ from cps_tools.core.pole_compare import (
 )
 from .schemas import PoleComparisonResponse  # NEW
 
-router = APIRouter()
+router = APIRouter(prefix="/api")
 
 # ---------------------------------------------------------------------------
 # Configuration – reuse uploads directory at project root
@@ -42,7 +42,24 @@ def _allowed_file(filename: str) -> bool:  # noqa: WPS110 – name mirrors Flask
 # ---------------------------------------------------------------------------
 
 
-@router.post("/api/pole-comparison", response_model=PoleComparisonResponse)
+@router.get("/pole-compare-debug")
+async def pole_compare_debug():
+    """Debug endpoint to check if the Pole Comparison router is working correctly."""
+    return {"status": "ok", "message": "Pole Comparison debug endpoint is working", "route": "/api/pole-compare-debug"}
+
+@router.get("/pole-compare-routes")
+async def pole_compare_routes():
+    """Return all routes registered on this router for debugging."""
+    routes = []
+    for route in router.routes:
+        routes.append({
+            "path": f"/api{route.path}",  # Include the prefix
+            "name": route.name,
+            "methods": list(route.methods) if hasattr(route, "methods") else []
+        })
+    return {"routes": routes}
+
+@router.post("/pole-comparison", response_model=PoleComparisonResponse)
 async def pole_comparison_api(
     katapult_file: UploadFile = File(...),
     spida_file: UploadFile = File(...),
@@ -104,4 +121,4 @@ async def pole_comparison_api(
             k_path.unlink(missing_ok=True)
             s_path.unlink(missing_ok=True)
         except Exception:  # noqa: BLE001
-            pass 
+            pass

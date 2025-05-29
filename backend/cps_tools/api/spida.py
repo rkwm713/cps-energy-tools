@@ -103,6 +103,24 @@ def _seed_insulators(spida_project: Dict[str, Any], attachments_by_scid: Dict[st
 router = APIRouter(prefix="/api", tags=["spidacalc"])
 
 
+@router.get("/spida-debug")
+async def spida_debug():
+    """Debug endpoint to check if the SPIDA router is working correctly."""
+    return {"status": "ok", "message": "SPIDA debug endpoint is working", "route": "/api/spida-debug"}
+
+@router.get("/spida-routes")
+async def spida_routes():
+    """Return all routes registered on this router for debugging."""
+    routes = []
+    for route in router.routes:
+        routes.append({
+            "path": f"/api{route.path}",  # Include the prefix
+            "name": route.name,
+            "methods": list(route.methods) if hasattr(route, "methods") else []
+        })
+    return {"routes": routes}
+
+
 @router.get("/insulator-specs", response_model=InsulatorSpecsResponse)
 async def get_insulator_specs():
     """Return the full insulator_specs.json so the React UI can build selects."""
