@@ -136,4 +136,51 @@ uvicorn backend.main:app --reload
 python test_api_endpoints.py
 ```
 
+**Status**: Fixed ✅
+
+## Latest Fix - 2025-05-29: Corrected API Router Import Path ✅
+
+### Problem
+After previous fixes, API endpoints were still returning 404 Not Found and 405 Method Not Allowed errors with Heroku logs showing:
+- `GET /cover-sheet HTTP/1.1" 404 Not Found`
+- `POST /api/pole-comparison HTTP/1.1" 405 Method Not Allowed`
+- Warning: `cps_tools.api package not found; tool routers not included.`
+
+### Root Cause Analysis
+The previous fix was incorrect. The actual module structure requires importing from `backend.cps_tools.api`, not `cps_tools.api`, due to how the project is organized with the backend module.
+
+### Final Fix Applied
+
+1. **Corrected Router Import Path**
+   - **Changed**: `from cps_tools.api import routers as _tool_routers`
+   - **To**: `from backend.cps_tools.api import routers as _tool_routers`
+   - **Location**: `backend/main.py` line 168
+   - **Impact**: API routes now properly register and respond to requests
+
+2. **Updated Error Message**
+   - Updated warning message to reflect correct import path for debugging
+   - **Impact**: Better error diagnostics for future issues
+
+3. **Created Test Script**
+   - Added `test_fixed_endpoints.py` for comprehensive endpoint testing
+   - Tests health endpoint and verifies API route registration
+   - Can test both locally and against Heroku deployment
+   - **Impact**: Easy verification of fix effectiveness
+
+### Expected Results
+- `/api/cover-sheet` endpoint should now respond correctly to POST requests
+- `/api/pole-comparison` endpoint should now respond correctly to POST requests
+- `/health` endpoint shows all registered API routes
+- No more "package not found" warnings in logs
+
+### Verification Commands
+```bash
+# Test against Heroku deployment
+python test_fixed_endpoints.py https://cps-energy-tools-eca5b70fc3e3.herokuapp.com
+
+# Test locally
+uvicorn backend.main:app --reload
+python test_fixed_endpoints.py http://localhost:8000
+```
+
 **Status**: Ready for deployment and testing ✅

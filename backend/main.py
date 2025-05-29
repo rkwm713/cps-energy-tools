@@ -174,7 +174,7 @@ else:
 # ---------------------------------------------------------------------------
 
 try:
-    from cps_tools.api import routers as _tool_routers  # noqa: WPS433 – runtime import to avoid circular
+    from backend.cps_tools.api import routers as _tool_routers  # noqa: WPS433 – runtime import to avoid circular
 
     app.include_router(_tool_routers)
     print("[fastapi_app] Successfully included tool routers")
@@ -182,4 +182,4 @@ except ModuleNotFoundError:
     # If the backend package is not on the PYTHONPATH in certain legacy setups,
     # skip inclusion.  This keeps fastapi_app runnable standalone during the
     # transition period.
-    print("[fastapi_app] Warning – cps_tools.api package not found; tool routers not included.")
+    print("[fastapi_app] Warning – backend.cps_tools.api package not found; tool routers not included.")
