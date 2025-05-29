@@ -10,22 +10,28 @@ include all of them in a single call::
 
 from fastapi import APIRouter
 
-# Individual routers ---------------------------------------------------------
-
-from . import pole_compare  # noqa: E402
-from . import cover_sheet  # noqa: E402
-from . import mrr_process  # noqa: E402
-from . import qc  # noqa: E402
-from . import exports  # noqa: E402
-from . import spida  # noqa: E402
+# Dynamically import routers so one failing module doesn't break the whole API
+_module_names = [
+    "pole_compare",
+    "cover_sheet",
+    "mrr_process",
+    "qc",
+    "exports",
+    "spida",
+]
 
 routers = APIRouter()
-routers.include_router(pole_compare.router)
-routers.include_router(cover_sheet.router)
-routers.include_router(mrr_process.router)
-routers.include_router(qc.router)
-routers.include_router(exports.router)
-routers.include_router(spida.router)
+
+for _name in _module_names:
+    try:
+        _mod = __import__(f"backend.cps_tools.api.{_name}", fromlist=["router"])
+        if hasattr(_mod, "router"):
+            routers.include_router(getattr(_mod, "router"))
+    except Exception as exc:  # noqa: BLE001
+        # Log the error and continue – critical for optional tools that have heavy deps
+        import logging
+
+        logging.getLogger(__name__).warning("Skipping router %s due to import error: %s", _name, exc)
 
 __all__ = [
     "routers",
