@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 from datetime import datetime
+import copy
 import math
 from typing import Any
 
 # Re-use small helpers from our own utils module
-from .utils import _ensure_dict, _FT_TO_M, extract_pole_details, insulator_specs, normalize_scid
+from .utils import (_ensure_dict, _FT_TO_M, extract_pole_details, insulator_specs, 
+                   normalize_scid, select_insulator, get_wire_properties)
 
 __all__ = [
     "convert_katapult_to_spidacalc",
@@ -31,7 +33,9 @@ def convert_katapult_to_spidacalc(kat_json: dict[str, Any], job_id: str, job_nam
         original function signature (future versions will embed it in the
         JSON as well).
     """
-
+    
+    # Wire and insulator data comes from engineering_templates.json
+    
     # --- Extract nodes / pole details -------------------------------------
     raw_nodes = kat_json.get("nodes") or kat_json.get("data", {}).get("nodes", {})
     nodes = _ensure_dict(raw_nodes, key_field="id", name="nodes")
@@ -54,6 +58,34 @@ def convert_katapult_to_spidacalc(kat_json: dict[str, Any], job_id: str, job_nam
 
     # Extract pole measurements & relationships ---------------------------------
     scid_map, pole_details = extract_pole_details(kat_json)
+    attachments_map = extract_attachments(kat_json)
+    
+    # Process connections to find spans between poles
+    connections = _ensure_dict(
+        kat_json.get("connections") or kat_json.get("data", {}).get("connections", {}),
+        name="connections"
+    )
+    
+    # Build a map of node_id to connected node_ids and connection types
+    connection_map = {}
+    for conn_id, conn in connections.items():
+        # Get connection type - look in different possible locations
+        conn_type = None
+        attrs = conn.get("attributes", {}) or {}
+        if isinstance(attrs.get("connection_type"), dict):
+            conn_type = attrs.get("connection_type", {}).get("value", "")
+        else:
+            conn_type = attrs.get("connection_type", "")
+            
+        # We're interested in spans (wires between poles)
+        if conn_type and any(span_type in conn_type.lower() for span_type in ["span", "wire"]):
+            node1 = conn.get("node_id_1")
+            node2 = conn.get("node_id_2")
+            if node1 and node2:
+                connection_map.setdefault(node1, []).append((node2, conn_id))
+                connection_map.setdefault(node2, []).append((node1, conn_id))
+    
+    print(f"\n=== Found {len(connection_map)} nodes with connections ===")
 
     # --- Build locations list ---------------------------------------------
     locations: list[dict[str, Any]] = []
@@ -125,6 +157,123 @@ def convert_katapult_to_spidacalc(kat_json: dict[str, Any], job_id: str, job_nam
 
         if lat is not None and lon is not None:
             location["mapLocation"] = {"coordinates": [float(lon), float(lat)]}
+
+        struct = location["designs"][0]["structure"]
+
+        # Process attachments for this pole
+        for att in attachments_map.get(scid, []):
+            # Convert feet → metres
+            m = att["height"] * _FT_TO_M
+
+            # Build a "wire" entry
+            phase = att["phase"] or "Unknown"
+            phase_upper = phase.upper()
+            wire_id = f"{scid}-{phase}-{round(m,3)}"
+            
+            # Get wire properties from engineering templates
+            wire_props = get_wire_properties(phase)
+            
+            wire = {
+                "id": wire_id,
+                "usageGroups": [phase_upper],
+                "size": wire_props.get("size"),
+                "calculation": "STATIC",
+                "strength": {"unit": "NEWTON", "value": wire_props.get("strength", 10000)},
+                "weight": {"unit": "NEWTON_PER_METRE", "value": wire_props.get("weight", 2.0)},
+                "diameter": {"unit": "METRE", "value": wire_props.get("diameter", 0.01)},
+                "description": phase,
+                "endpoints": []
+            }
+            struct["wires"].append(wire)
+
+            # Create endpoint on this pole
+            struct["wireEndPoints"].append({
+                "wireId": wire_id,
+                "poleId": scid,
+                "height": {"unit": "METRE", "value": m}
+            })
+            
+            # Check if this pole has connections to other poles
+            # For PRIMARY, NEUTRAL, and similar, create two-ended spans
+            # Skip for service drops, equipment, etc.
+            if phase_upper in ["PRIMARY", "NEUTRAL", "SECONDARY"] and node_id in connection_map:
+                for connected_node, conn_id in connection_map.get(node_id, []):
+                    connected_scid = scid_map.get(connected_node)
+                    if connected_scid:
+                        # Create a second endpoint on the connected pole at same height
+                        # Add a small suffix to wire_id to make it unique for this span
+                        span_wire_id = f"{wire_id}-span-{conn_id[-6:]}"
+                        
+                        # Create a new wire entry for this span
+                        # Create a new wire entry for this span with same properties
+                        span_wire = {
+                            "id": span_wire_id,
+                            "usageGroups": [phase_upper],
+                            "size": wire_props.get("size"),
+                            "calculation": "STATIC",
+                            "strength": {"unit": "NEWTON", "value": wire_props.get("strength", 10000)},
+                            "weight": {"unit": "NEWTON_PER_METRE", "value": wire_props.get("weight", 2.0)},
+                            "diameter": {"unit": "METRE", "value": wire_props.get("diameter", 0.01)},
+                            "description": f"{phase} Span",
+                            "endpoints": []
+                        }
+                        struct["wires"].append(span_wire)
+                        
+                        # Add the two endpoints for this span
+                        struct["wireEndPoints"].append({
+                            "wireId": span_wire_id,
+                            "poleId": scid,
+                            "height": {"unit": "METRE", "value": m}
+                        })
+                        
+                        struct["wireEndPoints"].append({
+                            "wireId": span_wire_id,
+                            "poleId": connected_scid,
+                            "height": {"unit": "METRE", "value": m}  # Same height on connected pole
+                        })
+            
+        # Add insulators based on attachments
+        attachments = attachments_map.get(scid, [])
+        insulators_added = set()  # Keep track of which insulator types we've already added
+        
+        for att in attachments:
+            # Determine insulator type based on attachment
+            insulator_type = None
+            phase = att.get("phase", "")
+            
+            if att.get("onCrossarm", False):
+                insulator_type = "CROSSARM"
+            elif "neutral" in phase.lower():
+                insulator_type = "DEADEND" if "NEUTRAL" not in insulators_added else None
+            elif "primary" in phase.lower():
+                insulator_type = "POLE_TOP" if "PRIMARY" not in insulators_added else None
+            elif "comm" in phase.lower():
+                insulator_type = "DEADEND" if "COMM" not in insulators_added else None
+            
+            # Add the insulator if we found a type and haven't added it yet
+            if insulator_type and insulator_type not in insulators_added:
+                insulator = select_insulator(insulator_type, phase)
+                if insulator:
+                    location["designs"][0]["structure"]["pole"].setdefault("insulators", []).append(insulator)
+                    insulators_added.add(insulator_type)
+        
+        # Create a "Recommended" design as a copy of the "Measured" design
+        measured_design = location["designs"][0]
+        recommended_design = copy.deepcopy(measured_design)
+        recommended_design["label"] = "Recommended Design"
+        recommended_design["layerType"] = "Recommended"
+        
+        # Since we don't have actual MR-move data, we'll just add a small increase to wire heights
+        # to demonstrate the feature - in a real implementation, this would use actual MR data
+        MR_HEIGHT_DELTA = 0.3  # 30 cm increase for demonstration
+        for endpoint in recommended_design["structure"]["wireEndPoints"]:
+            # Only adjust heights for attachments that would typically be moved
+            wire_id = endpoint["wireId"]
+            if any(phase in wire_id.upper() for phase in ["PRIMARY", "NEUTRAL", "SECONDARY"]):
+                endpoint["height"]["value"] += MR_HEIGHT_DELTA
+        
+        # Add the recommended design
+        location["designs"].append(recommended_design)
 
         locations.append(location)
 

@@ -6,7 +6,7 @@ in isolation and reused by multiple sub-modules.
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Dict, Optional
 import json
 from pathlib import Path
 
@@ -15,14 +15,23 @@ from pathlib import Path
 _FT_TO_M: float = 0.3048  # feet → metres
 
 # ---------------------------------------------------------------------------
-# Insulator specifications JSON ---------------------------------------------
+# Engineering templates JSON ------------------------------------------------
 # ---------------------------------------------------------------------------
 
-# Location is *project-root*/api/data/insulator_specs.json (same as legacy)
+# Load both insulator_specs (legacy) and engineering_templates (new format)
 _INSULATOR_SPECS_PATH = Path(__file__).resolve().parents[3] / "api" / "data" / "insulator_specs.json"
+_ENGINEERING_TEMPLATES_PATH = Path(__file__).resolve().parents[3] / "api" / "data" / "engineering_templates.json"
 
+# Legacy insulator specs
 insulator_specs: dict | list = {}
 
+# New engineering templates
+engineering_templates: Dict[str, Dict] = {
+    "insulators": {},
+    "wires": {}
+}
+
+# Load legacy insulator specs
 try:
     with _INSULATOR_SPECS_PATH.open(encoding="utf-8") as _f:
         insulator_specs = json.load(_f)
@@ -34,6 +43,106 @@ except json.JSONDecodeError as _err:
     print(
         f"[katapult.utils] Warning – failed to parse insulator_specs.json: {_err}. 'insulator_specs' will be empty."
     )
+
+# Load new engineering templates
+try:
+    with _ENGINEERING_TEMPLATES_PATH.open(encoding="utf-8") as _f:
+        engineering_templates = json.load(_f)
+except FileNotFoundError:
+    print(
+        f"[katapult.utils] Warning – engineering_templates.json not found at {_ENGINEERING_TEMPLATES_PATH}."
+    )
+except json.JSONDecodeError as _err:
+    print(
+        f"[katapult.utils] Warning – failed to parse engineering_templates.json: {_err}."
+    )
+
+def select_insulator(insulator_type: str, phase: Optional[str] = None, voltage: str = "13.2") -> Dict:
+    """Select an appropriate insulator based on type, phase, and voltage level.
+    
+    Parameters
+    ----------
+    insulator_type : str
+        Type of insulator (e.g., "crossarm", "pole_top", "deadend")
+    phase : str, optional
+        Phase designation (e.g., "Primary", "Neutral")
+    voltage : str, default "13.2"
+        Voltage level (e.g., "13.2", "24.9")
+        
+    Returns
+    -------
+    Dict
+        Insulator specification dictionary or empty dict if not found
+    """
+    # Normalize insulator type to uppercase
+    insulator_type = insulator_type.upper()
+    
+    # Get insulators from engineering templates
+    insulators = engineering_templates.get("insulators", {})
+    if not insulators:
+        return {}
+    
+    # Map common names to insulator types
+    type_map = {
+        "CROSSARM": "PIN",
+        "POLE_TOP": "POLE_TOP",
+        "DEADEND": "DEADEND",
+        "RUNNING_ANGLE": "RUNNING_ANGLE",
+        "BRACKET": "BRACKET",
+    }
+    
+    # Get SPIDAcalc insulator type
+    spida_type = type_map.get(insulator_type, insulator_type)
+    
+    # Try to find a matching insulator
+    for name, spec in insulators.items():
+        # Match type and voltage
+        if (spec.get("type") == spida_type and 
+            voltage in name):
+            # Phase-specific match if provided
+            if phase and phase.upper() in name.upper():
+                return spec
+            # Otherwise just return first matching insulator
+            return spec
+    
+    # Fallback to any matching type if voltage-specific not found
+    for name, spec in insulators.items():
+        if spec.get("type") == spida_type:
+            return spec
+    
+    # Return empty dict if nothing found
+    return {}
+
+def get_wire_properties(phase: str) -> Dict:
+    """Get wire properties for a specific phase from engineering templates.
+    
+    Parameters
+    ----------
+    phase : str
+        Phase designation (e.g., "Primary", "Neutral")
+        
+    Returns
+    -------
+    Dict
+        Wire properties dictionary with all SPIDAcalc fields
+    """
+    # Normalize phase name to uppercase
+    phase_upper = phase.upper() if phase else "UNKNOWN"
+    
+    # Get wire properties from engineering templates
+    wires = engineering_templates.get("wires", {})
+    
+    # Try exact match
+    if phase_upper in wires:
+        return wires[phase_upper]
+    
+    # Try partial match
+    for wire_type, props in wires.items():
+        if wire_type in phase_upper or phase_upper in wire_type:
+            return props
+    
+    # Default to PRIMARY properties if nothing found
+    return wires.get("PRIMARY", {})
 
 
 # SCID normalization --------------------------------------------------------
@@ -228,4 +337,7 @@ __all__ = [
     "extract_pole_details",
     "insulator_specs",
     "normalize_scid",
+    "select_insulator",
+    "get_wire_properties",
+    "engineering_templates",
 ]
