@@ -71,15 +71,16 @@ def convert_katapult_to_spidacalc(kat_json: dict[str, Any], job_id: str, job_nam
     connection_map = {}
     for conn_id, conn in connections.items():
         # Get connection type - look in different possible locations
-        conn_type = None
         attrs = conn.get("attributes", {}) or {}
+        conn_type = None
         if isinstance(attrs.get("connection_type"), dict):
-            conn_type = attrs.get("connection_type", {}).get("value", "")
+            conn_type = attrs.get("connection_type", {}).get("value") or ""
         else:
-            conn_type = attrs.get("connection_type", "")
+            conn_type = attrs.get("connection_type") or ""
             
         # We're interested in spans (wires between poles)
-        if conn_type and any(span_type in conn_type.lower() for span_type in ["span", "wire"]):
+        conn_type_lower = conn_type.lower()
+        if any(span_type in conn_type_lower for span_type in ["span", "wire"]):
             node1 = conn.get("node_id_1")
             node2 = conn.get("node_id_2")
             if node1 and node2:
@@ -167,7 +168,8 @@ def convert_katapult_to_spidacalc(kat_json: dict[str, Any], job_id: str, job_nam
             m = att["height"] * _FT_TO_M
 
             # Build a "wire" entry
-            phase = att["phase"] or "Unknown"
+            # Ensure phase is always a string, never None
+            phase = att.get("phase") or "Unknown"
             phase_upper = phase.upper()
             wire_id = f"{scid}-{phase}-{round(m,3)}"
             
@@ -240,15 +242,16 @@ def convert_katapult_to_spidacalc(kat_json: dict[str, Any], job_id: str, job_nam
         for att in attachments:
             # Determine insulator type based on attachment
             insulator_type = None
-            phase = att.get("phase", "")
+            phase = att.get("phase") or ""
+            phase_lower = phase.lower()
             
             if att.get("onCrossarm", False):
                 insulator_type = "CROSSARM"
-            elif "neutral" in phase.lower():
+            elif "neutral" in phase_lower:
                 insulator_type = "DEADEND" if "NEUTRAL" not in insulators_added else None
-            elif "primary" in phase.lower():
+            elif "primary" in phase_lower:
                 insulator_type = "POLE_TOP" if "PRIMARY" not in insulators_added else None
-            elif "comm" in phase.lower():
+            elif "comm" in phase_lower:
                 insulator_type = "DEADEND" if "COMM" not in insulators_added else None
             
             # Add the insulator if we found a type and haven't added it yet
@@ -430,11 +433,14 @@ def extract_attachments(kata_json: dict[str, Any]) -> dict[str, list[dict[str, A
                 phase = _infer_phase_from_trace(trace_id)
                 
                 # If no phase from trace, try direct fields
+                # Ensure we have a string value for phase, not None
                 if not phase:
                     cable_type = item.get("cable_type")
                     equipment_type = item.get("equipment_type")
                     if cable_type or equipment_type:
                         phase = cable_type or equipment_type
+                    else:
+                        phase = ""  # Ensure phase is never None
                 
                 # Determine if on crossarm
                 on_crossarm = _is_on_crossarm(phase)
