@@ -326,7 +326,7 @@ def extract_attachments(kata_json: dict[str, Any]) -> dict[str, list[dict[str, A
     traces = kata_json.get("traces", {})
     trace_data = traces.get("trace_data", {}) if traces else {}
     
-    # Initialize result - using node_id as SCID for consistency
+    # Initialize result - using normalized SCID as key for consistency
     result: dict[str, list[dict[str, Any]]] = {}
     
     def _safe_float(val: Any) -> float | None:
@@ -380,8 +380,9 @@ def extract_attachments(kata_json: dict[str, Any]) -> dict[str, list[dict[str, A
     
     # For each node, find attachments in photofirst_data
     for node_id, node in nodes.items():
-        # Use node_id as SCID for consistency with convert_katapult_to_spidacalc
-        scid = node_id
+        # Normalize SCID early for consistency with converter
+        raw_scid = (node.get("attributes") or {}).get("scid")
+        scid = normalize_scid(raw_scid) or node_id
         result[scid] = []
         
         # Check if we have photos in the node
@@ -446,7 +447,7 @@ def extract_attachments(kata_json: dict[str, Any]) -> dict[str, list[dict[str, A
                 attachment_count += 1
                 
         if attachment_count > 0:
-            print(f"  Node {node_id}: Found {attachment_count} attachments from photofirst_data")
+            print(f"  Node {node_id} (SCID {scid}): Found {attachment_count} attachments from photofirst_data")
     
     # Summary of results
     total_atts = sum(len(atts) for atts in result.values())
