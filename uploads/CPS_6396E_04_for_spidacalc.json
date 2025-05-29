@@ -1,0 +1,15 @@
+{
+  "label": "CPS_6396E_04",
+  "dateModified": 1748547416545,
+  "date": "2025-05-29",
+  "schema": "/schema/spidacalc/calc/project.schema",
+  "version": 11,
+  "engineer": "AutoConvert",
+  "clientFile": "TechServ_Light C_Static_Tension.client",
+  "leads": [
+    {
+      "label": "Untitled Job",
+      "locations": []
+    }
+  ]
+}

@@ -16,6 +16,7 @@ export interface InsulatorRow {
   specIndex: number | null
   distanceToTop: { unit: string; value: number | null }
   onCrossarm: boolean
+  phase?: string
 }
 
 interface Props {
@@ -45,6 +46,7 @@ const AttachmentTable: React.FC<Props> = ({ rows, specs, onRowChange }) => {
         <TableRow>
           <TableCell>#</TableCell>
           <TableCell>Height (m)</TableCell>
+          <TableCell>Phase</TableCell>
           <TableCell>Insulator Type</TableCell>
           <TableCell align="center">On Crossarm</TableCell>
           <TableCell>Status</TableCell>
@@ -59,6 +61,7 @@ const AttachmentTable: React.FC<Props> = ({ rows, specs, onRowChange }) => {
                 ? row.distanceToTop.value.toFixed(2)
                 : '—'}
             </TableCell>
+            <TableCell>{row.phase || '—'}</TableCell>
             <TableCell>
               <FormControl size="small" fullWidth>
                 <Select

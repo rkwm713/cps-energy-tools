@@ -1,3 +1,17 @@
+FROM node:18 AS frontend-build
+
+WORKDIR /app/frontend
+
+COPY frontend/package*.json ./
+RUN npm ci --legacy-peer-deps
+
+COPY frontend .
+RUN npm run build
+
+# ---------------------------------------------------------------------------
+# Python backend stage -------------------------------------------------------
+# ---------------------------------------------------------------------------
+
 FROM python:3.10-slim AS base
 
 # ---------- install Poetry (cached layer) ----------
@@ -25,6 +39,9 @@ RUN poetry install --only main --no-interaction --no-ansi
 
 # ---------- copy project source ----------
 COPY . /app
+
+# ---------- copy built frontend assets ----------
+COPY --from=frontend-build /app/frontend/dist /app/frontend/dist
 
 # ---------- runtime configuration ----------
 EXPOSE 8000

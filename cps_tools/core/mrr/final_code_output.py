@@ -86,6 +86,11 @@ except Exception:  # noqa: BLE001 – any import/setup failure switches to stubs
     tk.StringVar = _StringVar  # type: ignore[attr-defined]
     tk.Text = _DummyWidget  # type: ignore[attr-defined]
     tk.END = "end"  # type: ignore[attr-defined]
+    # Directional constants used for widget layout – harmless string stubs
+    tk.W = "w"  # type: ignore[attr-defined]
+    tk.E = "e"  # type: ignore[attr-defined]
+    tk.N = "n"  # type: ignore[attr-defined]
+    tk.S = "s"  # type: ignore[attr-defined]
 
     # Provide minimal stand-ins for ttk / messagebox / filedialog
     ttk = types.SimpleNamespace(Label=_DummyWidget, Entry=_DummyWidget, Button=_DummyWidget)

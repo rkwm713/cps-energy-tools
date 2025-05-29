@@ -64,7 +64,8 @@ const MRRTool: React.FC = () => {
       setError(null)
       notify({ message: 'MRR processing completed', severity: 'success' })
     } catch (err: any) {
-      const msg = err.response?.data?.error || err.message
+      // Prefer FastAPI's `detail` field for HTTPException errors, fallback to `error`, then generic message
+      const msg = err.response?.data?.detail || err.response?.data?.error || err.message
       setError(msg)
       notify({ message: msg, severity: 'error' })
       setResult(null)

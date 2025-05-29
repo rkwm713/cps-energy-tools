@@ -70,6 +70,9 @@ async def mrr_process_api(
 
         filename = Path(output_path).name
 
+        # Front-end expects this key to show the Download button
+        stats["output_filename"] = filename
+
         response = MRRProcessResponse(
             success=True,
             message="MRR processing completed successfully",

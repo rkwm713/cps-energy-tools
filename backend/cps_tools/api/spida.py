@@ -68,27 +68,39 @@ def _seed_insulators(spida_project: Dict[str, Any], attachments_by_scid: Dict[st
             if not designs:
                 continue
             struct = designs[0].get("structure", {})
+            existing_rich = [i for i in struct.get("insulators", []) if i.get("size") or i.get("type")]  # non-placeholder
+
             pole_height_m = (
                 struct.get("pole", {})
                 .get("agl", {})
                 .get("value")
             )  # already in metres in convert_katapult
 
+            # If we already have rich insulator objects, don't add placeholders
+            if existing_rich:
+                continue
+
             struct["insulators"] = struct.get("insulators", [])
             for att in attachments_by_scid.get(scid, []):
-                ht_ft = att.get("height")
-                if ht_ft is None:
+                # Attachments from the new converter expose *height_m*; fall
+                # back to legacy *height* (feet) for backward-compatibility.
+                ht_m: float | None = att.get("height_m")
+                if ht_m is None and (ht_ft := att.get("height")) is not None:
+                    ht_m = ht_ft * _FT_TO_M
+
+                if ht_m is None:
                     continue
+
                 distance_m = None
                 if pole_height_m is not None:
-                    distance_m = round(pole_height_m - ht_ft * _FT_TO_M, 3)
+                    distance_m = round(pole_height_m - ht_m, 3)
                     if distance_m < 0:
                         distance_m = 0.0
                 struct["insulators"].append(
                     {
                         "specIndex": None,
                         "distanceToTop": {"unit": "METRE", "value": distance_m},
-                        "onCrossarm": bool(att.get("onCrossarm")),
+                        "onCrossarm": bool(att.get("on_crossarm") or att.get("onCrossarm")),
                     }
                 )
     return spida_project
@@ -203,30 +215,67 @@ async def spida_import(
             for loc in lead.get("locations", []):
                 struct = loc["designs"][0]["structure"]
                 print(f"  SCID {loc['poleId']}: {len(struct.get('insulators', []))} insulators")
-                
+        
+        # ------------------------------------------------------------------
+        # 3a) Check for unassigned (placeholder) insulators.  If any exist,
+        #     we defer file creation so the UI can prompt the user.
+        # ------------------------------------------------------------------
+        def _has_placeholders(project: Dict[str, Any]) -> bool:
+            for lead in project.get("leads", []):
+                for loc in lead.get("locations", []):
+                    struct = loc.get("designs", [])[0].get("structure", {})
+                    for ins in struct.get("insulators", []):
+                        # A placeholder has specIndex == None (null in JSON)
+                        # or is missing a concrete "size" field.
+                        if ins.get("specIndex") is None and not ins.get("size"):
+                            return True
+            return False
+
+        placeholders_remaining = _has_placeholders(spida_project)
+
     except Exception as exc:  # noqa: BLE001
         raise HTTPException(status_code=500, detail=f"Conversion failed: {exc}") from exc
 
     # ------------------------------------------------------------------
-    # 4) Validate
+    # 4) If placeholders remain, skip validation + file write and tell the UI
     # ------------------------------------------------------------------
-    # Import validator from the main app module
+    if placeholders_remaining:
+        structures_summary = []
+        for lead in spida_project.get("leads", []):
+            for loc in lead.get("locations", []):
+                struct = loc.get("designs", [])[0].get("structure", {})
+                structures_summary.append({
+                    "structureId": str(loc.get("poleId")),
+                    "poleNumber": loc.get("label"),
+                    "lat": loc.get("mapLocation", {}).get("coordinates", [None, None])[1],
+                    "lon": loc.get("mapLocation", {}).get("coordinates", [None, None])[0],
+                    "insulators": struct.get("insulators", []),
+                })
+
+        return SpidaImportResponse(
+            success=True,
+            download_available=False,  # user must complete insulator specs first
+            filename="",
+            download_url="",
+            structures=structures_summary,
+            job={"id": job_id, "name": job_name},
+        )
+
+    # ------------------------------------------------------------------
+    # 5) Validate (only if no placeholders)
+    # ------------------------------------------------------------------
     import sys
     if 'backend.main' in sys.modules:
         _validator = getattr(sys.modules['backend.main'], '_validator', None)
     else:
         _validator = None
 
-    if not _validator:
-        # If validator is not available, return an error or skip validation based on desired behavior
-        raise HTTPException(status_code=500, detail="Schema validator not initialized.")
-
     errors = [e.message for e in _validator.iter_errors(spida_project)]
     if errors:
         return JSONResponse({"error": "Schema validation failed", "errors": errors}, status_code=400)
 
     # ------------------------------------------------------------------
-    # 5) Persist to disk so user can download
+    # 6) Persist to disk so user can download
     # ------------------------------------------------------------------
     filename = f"{job_id}_for_spidacalc.json"
     file_path = UPLOAD_DIR / filename
@@ -247,7 +296,7 @@ async def spida_import(
             })
 
     # ------------------------------------------------------------------
-    # 6) Response
+    # 7) Response
     # ------------------------------------------------------------------
     return SpidaImportResponse(
         success=True,
