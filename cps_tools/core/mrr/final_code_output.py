@@ -5,6 +5,9 @@ import json
 import datetime
 import os
 import re
+import logging
+from pathlib import Path
+from typing import Any, Dict, Optional, Tuple
 
 # === Constants for Attachment and Span Labels ===
 EXISTING_ATTACHMENT_HEIGHT = "Attachment Height - Existing"
@@ -2203,6 +2206,91 @@ class FileProcessorGUI(tk.Tk):
 
 
 
+
+
+# Add the headless processing function that matches the signature of the original process function
+def process(
+    job_json: Path,
+    geojson: Path | None = None,
+    *,
+    output: Path | None = None,
+) -> Tuple[Path, Dict[str, Any]]:
+    """Generate an Excel report from *SPIDAcalc* job + geo data.
+
+    Parameters
+    ----------
+    job_json:
+        Path to the *Job* JSON file exported from SPIDAcalc.
+    geojson:
+        Optional GeoJSON file containing spatial data used by some routines.
+    output:
+        Destination path for the generated ``.xlsx`` workbook.  If *None*, the
+        file will be written next to *job_json* with a ``_Python_Output.xlsx``
+        suffix (auto-versioned if the name already exists).
+
+    Returns
+    -------
+    Tuple[Path, Dict[str, Any]]
+        ``(output_path, stats)`` where *stats* currently contains a row count
+        and can be extended later.
+    """
+    _LOG = logging.getLogger(__name__)
+    
+    job_json = Path(job_json).expanduser().resolve()
+    if not job_json.exists():
+        raise FileNotFoundError(job_json)
+
+    geojson_path: Optional[Path] = None
+    if geojson is not None:
+        geojson_path = Path(geojson).expanduser().resolve()
+        if not geojson_path.exists():
+            _LOG.warning("GeoJSON path not found – continuing without: %s", geojson_path)
+            geojson_path = None
+
+    # Create a headless instance of the GUI processor
+    gui_instance = FileProcessorGUI()
+
+    # Load the job data
+    with open(job_json, 'r', encoding='utf-8') as file:
+        job_data = json.load(file)
+    
+    # Load geo data if available
+    geo_data = None
+    if geojson_path:
+        with open(geojson_path, 'r', encoding='utf-8') as file:
+            geo_data = json.load(file)
+
+    # Process the data using the GUI class
+    _LOG.debug("Running FileProcessorGUI.process_data() …")
+    df = gui_instance.process_data(job_data, geo_data)
+
+    if df.empty:
+        raise RuntimeError("MRR processor produced an empty DataFrame – nothing to export")
+
+    # Determine the output path
+    if output is None:
+        output_base = job_json.with_suffix("")
+        output_base = output_base.with_name(output_base.name + "_Python_Output.xlsx")
+        output = output_base
+        version = 2
+        stem = output_base.stem
+        while output.exists():
+            output = output_base.with_name(f"{stem}_v{version}.xlsx")
+            version += 1
+    else:
+        output = Path(output).expanduser().resolve()
+        output.parent.mkdir(parents=True, exist_ok=True)
+
+    # Create the Excel output
+    _LOG.info("Writing Excel report to %s (%d rows, %d cols)", output, len(df), len(df.columns))
+    gui_instance.create_output_excel(output, df, job_data)
+
+    # Return the output path and stats
+    stats = {
+        "rows": len(df),
+        "columns": len(df.columns),
+    }
+    return output, stats
 
 
 if __name__ == "__main__":
