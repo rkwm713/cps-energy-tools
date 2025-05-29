@@ -37,8 +37,8 @@ def _build_table(poles: Iterable[PoleSummary]) -> Table:
     table.add_column("Notes")
 
     for pole in poles:
-        existing = f"{pole.existing_loading_pct:.1f}%" if pole.existing_loading_pct is not None else "N/A"
-        final = f"{pole.final_loading_pct:.1f}%" if pole.final_loading_pct is not None else "N/A"
+        existing = f"{pole.existing_loading_pct:.2f}%" if pole.existing_loading_pct is not None else "N/A"
+        final = f"{pole.final_loading_pct:.2f}%" if pole.final_loading_pct is not None else "N/A"
         table.add_row(
             str(pole.scid),
             pole.station_id,

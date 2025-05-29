@@ -194,7 +194,7 @@ const PolesTable: React.FC<{ rows: PoleRow[]; search: string }> = ({ rows, searc
     )
   }, [rows, search])
 
-  const fmtLoad = (val: number | null) => (val !== null && val !== undefined ? `${val.toFixed(1)}%` : '')
+  const fmtLoad = (val: number | null) => (val !== null && val !== undefined ? `${val.toFixed(2)}%` : '')
   const fmtStation = (s: string) => (s && s.includes('-') ? s.split('-').slice(1).join('-') : s)
 
   return (
