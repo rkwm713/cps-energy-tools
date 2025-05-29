@@ -16,7 +16,8 @@ from cps_tools.core.mrr import process  # Import the headless process function
 from cps_tools.settings import get_settings # Import get_settings
 from .schemas import MRRProcessResponse
 
-router = APIRouter()
+# Create router with an explicit prefix to avoid path conflicts
+router = APIRouter(prefix="/api")
 
 settings = get_settings() # Get settings instance
 UPLOAD_DIR = Path(settings.upload_dir) # Use the centralized upload directory
@@ -28,7 +29,7 @@ def _allowed_file(filename: str) -> bool:
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@router.post("/api/mrr-process", response_model=MRRProcessResponse)
+@router.post("/mrr-process", response_model=MRRProcessResponse)
 async def mrr_process_api(
     job_file: UploadFile = File(...),
     geojson_file: UploadFile | None = File(None),
@@ -75,7 +76,7 @@ async def mrr_process_api(
             summary=stats,  # 'stats' from 'process' function
             preview=None,   # 'process' function does not return a 'preview'
             download_available=True,
-            download_url=f"/api/download-mrr/{filename}",
+            download_url=f"/api/download-mrr/{filename}",  # Keep this URL format for frontend compatibility
         )
         return response
 
@@ -93,7 +94,13 @@ async def mrr_process_api(
             pass
 
 
-@router.get("/api/download-mrr/{filename}")
+# Add a debug endpoint to help diagnose routing issues
+@router.get("/mrr-debug")
+async def mrr_debug():
+    """Debug endpoint to check if the router is working correctly."""
+    return {"status": "ok", "message": "MRR debug endpoint is working"}
+
+@router.get("/download-mrr/{filename}")
 async def download_mrr_file(filename: str):
     """Download the generated MRR Excel file by filename."""
     path = UPLOAD_DIR / Path(filename).name  # security – prevent path traversal

@@ -14,7 +14,7 @@ import os
 from pathlib import Path
 from typing import Any, Dict, List
 
-from fastapi import FastAPI
+from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
@@ -125,6 +125,18 @@ async def health_check():
         "message": "CPS Energy Tools API is running",
         "routes": routes
     }
+    
+# Direct endpoint for MRR processing to bypass router issues
+@app.post("/api/mrr-direct")
+async def mrr_direct_endpoint(job_file: UploadFile = File(...), geojson_file: UploadFile = File(None)):
+    """Direct MRR processing endpoint to diagnose router issues."""
+    from cps_tools.core.mrr import process
+    
+    # Log the request
+    print(f"[mrr_direct] Received direct MRR request: {job_file.filename}")
+    
+    # Simple response for testing
+    return {"status": "received", "filename": job_file.filename}
 
 app.add_middleware(
     CORSMiddleware,
@@ -143,6 +155,15 @@ try:
     from .cps_tools.api import routers as _tool_routers  # noqa: WPS433 – runtime import to avoid circular
 
     app.include_router(_tool_routers)
+    
+    # Direct import of MRR router for better diagnostics
+    try:
+        from .cps_tools.api import mrr_process
+        app.include_router(mrr_process.router)
+        print("[fastapi_app] Successfully included MRR router directly")
+    except Exception as mrr_e:
+        print(f"[fastapi_app] Error directly including MRR router: {mrr_e}")
+    
     print("[fastapi_app] Successfully included tool routers")
 except ModuleNotFoundError as e:
     # If the backend package is not on the PYTHONPATH in certain legacy setups,
