@@ -1,0 +1,25 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.so
+
+# Git and VCS
+.git/
+
+# Local virtual env
+.venv/
+
+# Node modules / frontend builds
+frontend/node_modules/
+
+# Editor & OS files
+.DS_Store
+*.swp
+
+# Test output
+.coverage
+htmlcov/
+pytest_cache/
+
+# Misc
+uploads/ 
