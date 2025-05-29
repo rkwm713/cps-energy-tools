@@ -62,9 +62,8 @@ def convert_katapult_to_spidacalc(kat_json: dict[str, Any], job_id: str, job_nam
     for node_id, node in nodes.items():
         attrs = node.get("attributes", {}) or {}
         
-        # Use the node_id as the primary identifier for consistency
-        # This matches what extract_attachments will use
-        scid = node_id
+        # Normalize SCID identically everywhere
+        scid = normalize_scid((node.get("attributes", {}) or {}).get("scid")) or node_id
         print(f"  Node {node_id} -> using node ID as SCID '{scid}'")
 
         pole_no = (
@@ -241,10 +240,12 @@ def extract_attachments(kata_json: dict[str, Any]) -> dict[str, list[dict[str, A
             print(f"  Node {node_id}: No photos found")
             continue
             
-        # Find main photo
+        # Find "main" photo (Katapult marks it with association=True or association_type="auto")
         main_photo_id = None
         for photo_id, photo_ref in node_photos.items():
-            if isinstance(photo_ref, dict) and photo_ref.get("association") == "main":
+            if not isinstance(photo_ref, dict):
+                continue
+            if photo_ref.get("association") or photo_ref.get("association_type") in ("auto","main"):
                 main_photo_id = photo_id
                 break
                 
