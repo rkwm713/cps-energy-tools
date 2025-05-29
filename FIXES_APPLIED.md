@@ -43,3 +43,39 @@ After deployment, the following should work:
 - Health check at `/health` should list all API routes
 - POST requests to `/api/pole-comparison` should not return 405
 - All other API endpoints should be accessible
+
+## Issue: 404 Not Found on Page Refresh (2025-05-29)
+
+### Problem
+- When users refresh the page on any route (e.g., `/pole-comparison`), the server returns `{"detail":"Not Found"}`
+- This is a classic Single Page Application (SPA) routing issue
+
+### Root Cause
+- The root static mount (`app.mount("/", StaticFiles(...))`) was intercepting all requests before they could reach the catch-all route
+- When refreshing on `/pole-comparison`, the static file handler looked for a file at that path, didn't find it, and returned 404
+
+### Fix Applied (backend/main.py)
+
+1. **Removed Root Static Mount**:
+   - Removed the problematic `app.mount("/", StaticFiles(...))` that was intercepting all requests
+   - Kept only the `/assets` mount for serving static assets
+
+2. **Updated Catch-All Route**:
+   - Modified the `catch_all` function to properly handle SPA routing
+   - The new logic:
+     - First checks if the requested path is an actual static file (like `cps-tools-logo.svg`)
+     - If it's a file, serves the file directly
+     - If it's not a file, serves `index.html` to let React Router handle client-side routing
+
+### Result
+- Refreshing on any route (e.g., `/pole-comparison`) now correctly serves `index.html`
+- React Router takes over and displays the appropriate component
+- Static files like logos and favicons continue to work correctly
+- API endpoints remain unaffected
+
+### Testing
+After deployment, verify:
+1. Navigate to `/pole-comparison` and refresh the page - should load correctly
+2. Direct navigation to any route should work
+3. Static files like `/cps-tools-logo.svg` should still load
+4. API endpoints should continue functioning normally

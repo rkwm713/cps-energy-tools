@@ -167,23 +167,30 @@ if STATIC_FILES_DIR.exists():
         StaticFiles(directory=STATIC_FILES_DIR / "assets"),
         name="react-assets",
     )
-    # Serve static files from the root of the 'dist' directory,
-    # including index.html for the root path.
-    app.mount(
-        "/", StaticFiles(directory=STATIC_FILES_DIR, html=True), name="react-app-root"
-    )
 
     @app.get("/{full_path:path}", include_in_schema=False)
     async def catch_all(full_path: str):
         """
         Catch-all to serve index.html for client-side routing.
-        Ensures that refreshing a page or directly navigating to a
-        React route (e.g., /my-page) still loads the React app.
-        This should come AFTER specific API routes and static file mounts.
+        First checks if the requested path is an actual static file,
+        if not, serves index.html for React Router to handle.
         """
+        # Handle root path
+        if not full_path:
+            index_path = STATIC_FILES_DIR / "index.html"
+            if index_path.exists():
+                return FileResponse(index_path)
+        
+        # Check if it's a request for a static file
+        file_path = STATIC_FILES_DIR / full_path
+        if file_path.exists() and file_path.is_file():
+            return FileResponse(file_path)
+        
+        # For all other paths, serve index.html for client-side routing
         index_path = STATIC_FILES_DIR / "index.html"
         if index_path.exists():
             return FileResponse(index_path)
+        
         return {"message": "Frontend not found"}, 404
 else:
     print(
