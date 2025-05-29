@@ -227,7 +227,7 @@ def extract_cover_sheet_data(json_data: Dict[str, Any]) -> ProjectMeta:  # noqa:
             formatted_pole_id = pole_id
             match = re.search(r"\d+-PL(\d+)", pole_id)
             if match:
-                formatted_pole_id = match.group(1)
+                formatted_pole_id = "PL" + match.group(1)
 
             poles.append(
                 PoleSummary(
@@ -257,4 +257,4 @@ def extract_cover_sheet_data(json_data: Dict[str, Any]) -> ProjectMeta:  # noqa:
             "Poles": poles,
         }
     )
-    return meta 
+    return meta
