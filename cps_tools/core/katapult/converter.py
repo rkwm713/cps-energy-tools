@@ -40,25 +40,26 @@ def convert_katapult_to_spidacalc(kat_json: dict[str, Any], job_id: str, job_nam
     raw_nodes = kat_json.get("nodes") or kat_json.get("data", {}).get("nodes", {})
     nodes = _ensure_dict(raw_nodes, key_field="id", name="nodes")
 
-    # Only keep the node types we care about:
-    ALLOWED_NODE_TYPES = {"pole", "Power", "Power Transformer", "Joint", "Joint Transformer"}
-    filtered_nodes: dict[str, Any] = {}
-    for nid, node in nodes.items():
-        # Katapult stores the type in attributes.nodeType.value
-        node_type = (
-            (node.get("attributes", {}) or {})
-                .get("nodeType", {})
-                .get("value", "")
-        )
-        if node_type in ALLOWED_NODE_TYPES:
-            filtered_nodes[nid] = node
-        else:
-            print(f"  Skipping node {nid} of type '{node_type}'")
+    # Extract attachments first so we can use that information for node filtering
+    attachments_map = extract_attachments(kat_json)
+    
+    # Keep only nodes that either have attachments or have a SCID attribute
+    filtered_nodes = {
+        nid: node
+        for nid, node in nodes.items()
+        if nid in attachments_map or (node.get("attributes") or {}).get("scid")
+    }
+    
+    # Log the filtering results
+    print(f"  Found {len(nodes)} total nodes, retaining {len(filtered_nodes)} for export")
+    for nid in set(nodes.keys()) - set(filtered_nodes.keys()):
+        print(f"  Dropping node {nid} - no attachments and no SCID")
+        
     nodes = filtered_nodes
 
     # Extract pole measurements & relationships ---------------------------------
     scid_map, pole_details = extract_pole_details(kat_json)
-    attachments_map = extract_attachments(kat_json)
+    # attachments_map already extracted above
     
     # Process connections to find spans between poles
     connections = _ensure_dict(
