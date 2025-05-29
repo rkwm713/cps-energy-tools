@@ -341,9 +341,9 @@ def extract_attachments(kata_json: dict[str, Any]) -> dict[str, list[dict[str, A
             return None
         
         trace_info = trace_data.get(trace_id, {})
-        cable_type = trace_info.get("cable_type", "").lower()
-        equipment_type = trace_info.get("equipment_type", "").lower()
-        company = trace_info.get("company", "").lower()
+        cable_type = (trace_info.get("cable_type") or "").lower()
+        equipment_type = (trace_info.get("equipment_type") or "").lower()
+        company = (trace_info.get("company") or "").lower()
         
         # Check cable type
         if 'primary' in cable_type:
