@@ -134,7 +134,29 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Mount static files (React build)
+# ---------------------------------------------------------------------------
+# Include modular routers from backend package (newly ported endpoints)
+# IMPORTANT: This MUST come before static file mounting to avoid route shadowing
+# ---------------------------------------------------------------------------
+
+try:
+    from .cps_tools.api import routers as _tool_routers  # noqa: WPS433 – runtime import to avoid circular
+
+    app.include_router(_tool_routers)
+    print("[fastapi_app] Successfully included tool routers")
+except ModuleNotFoundError as e:
+    # If the backend package is not on the PYTHONPATH in certain legacy setups,
+    # skip inclusion.  This keeps fastapi_app runnable standalone during the
+    # transition period.
+    print(f"[fastapi_app] Warning – cps_tools.api package not found: {e}; tool routers not included.")
+except Exception as e:
+    # Catch any other import errors for better debugging
+    print(f"[fastapi_app] Error loading tool routers: {e}")
+
+# ---------------------------------------------------------------------------
+# Mount static files (React build) - AFTER API routes
+# ---------------------------------------------------------------------------
+
 # This assumes your React app is built into 'frontend/dist'
 # and 'frontend' is at the same level as 'backend'
 STATIC_FILES_DIR = APP_ROOT / "frontend" / "dist"
@@ -168,18 +190,3 @@ else:
         f"[fastapi_app] WARNING – Frontend build directory not found at {STATIC_FILES_DIR}. "
         "Frontend will not be served."
     )
-
-# ---------------------------------------------------------------------------
-# Include modular routers from backend package (newly ported endpoints)
-# ---------------------------------------------------------------------------
-
-try:
-    from backend.cps_tools.api import routers as _tool_routers  # noqa: WPS433 – runtime import to avoid circular
-
-    app.include_router(_tool_routers)
-    print("[fastapi_app] Successfully included tool routers")
-except ModuleNotFoundError:
-    # If the backend package is not on the PYTHONPATH in certain legacy setups,
-    # skip inclusion.  This keeps fastapi_app runnable standalone during the
-    # transition period.
-    print("[fastapi_app] Warning – backend.cps_tools.api package not found; tool routers not included.")
