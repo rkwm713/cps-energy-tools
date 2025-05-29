@@ -135,7 +135,10 @@ def test_api_endpoints():
     endpoints = [
         {"url": "/api/mrr-process", "method": "POST"},
         {"url": "/api/spida-import", "method": "POST"},
-        {"url": "/api/pole-comparison", "method": "POST"}
+        {"url": "/api/pole-comparison", "method": "POST"},
+        {"url": "/api/cover-sheet", "method": "POST"},
+        {"url": "/api/spidacalc-qc", "method": "POST"},
+        {"url": "/api/export-csv", "method": "POST"}
     ]
     
     all_passed = True

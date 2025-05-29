@@ -16,7 +16,7 @@ from fastapi import APIRouter, File, HTTPException, UploadFile
 from cps_tools.core.cover_sheet import extract_cover_sheet_data
 from .schemas import CoverSheetResponse
 
-router = APIRouter()
+router = APIRouter(prefix="/api")
 
 UPLOAD_DIR = Path(__file__).resolve().parents[3] / "uploads"
 UPLOAD_DIR.mkdir(exist_ok=True)
@@ -28,7 +28,24 @@ def _allowed_file(filename: str) -> bool:
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@router.post("/api/cover-sheet", response_model=CoverSheetResponse)
+@router.get("/cover-sheet-debug")
+async def cover_sheet_debug():
+    """Debug endpoint to check if the Cover Sheet router is working correctly."""
+    return {"status": "ok", "message": "Cover Sheet debug endpoint is working", "route": "/api/cover-sheet-debug"}
+
+@router.get("/cover-sheet-routes")
+async def cover_sheet_routes():
+    """Return all routes registered on this router for debugging."""
+    routes = []
+    for route in router.routes:
+        routes.append({
+            "path": f"/api{route.path}",  # Include the prefix
+            "name": route.name,
+            "methods": list(route.methods) if hasattr(route, "methods") else []
+        })
+    return {"routes": routes}
+
+@router.post("/cover-sheet", response_model=CoverSheetResponse)
 async def cover_sheet_api(spida_file: UploadFile = File(...)) -> CoverSheetResponse:
     """Generate cover-sheet JSON fragment from an uploaded SPIDAcalc file."""
 
@@ -58,4 +75,4 @@ async def cover_sheet_api(spida_file: UploadFile = File(...)) -> CoverSheetRespo
         try:
             spida_path.unlink(missing_ok=True)
         except Exception:  # noqa: BLE001
-            pass 
+            pass

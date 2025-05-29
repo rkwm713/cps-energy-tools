@@ -12,7 +12,7 @@ from fastapi import APIRouter, File, HTTPException, UploadFile
 from cps_tools.core.qc import QCChecker
 from .schemas import QCResponse
 
-router = APIRouter()
+router = APIRouter(prefix="/api")
 
 UPLOAD_DIR = Path(__file__).resolve().parents[3] / "uploads"
 UPLOAD_DIR.mkdir(exist_ok=True)
@@ -24,7 +24,24 @@ def _allowed_file(filename: str) -> bool:
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@router.post("/api/spidacalc-qc", response_model=QCResponse)
+@router.get("/qc-debug")
+async def qc_debug():
+    """Debug endpoint to check if the QC router is working correctly."""
+    return {"status": "ok", "message": "QC debug endpoint is working", "route": "/api/qc-debug"}
+
+@router.get("/qc-routes")
+async def qc_routes():
+    """Return all routes registered on this router for debugging."""
+    routes = []
+    for route in router.routes:
+        routes.append({
+            "path": f"/api{route.path}",  # Include the prefix
+            "name": route.name,
+            "methods": list(route.methods) if hasattr(route, "methods") else []
+        })
+    return {"routes": routes}
+
+@router.post("/spidacalc-qc", response_model=QCResponse)
 async def spidacalc_qc_api(
     spida_file: UploadFile = File(...),
     katapult_file: UploadFile | None = File(None),
@@ -132,4 +149,4 @@ async def spidacalc_qc_api(
             if kata_path:
                 kata_path.unlink(missing_ok=True)
         except Exception:
-            pass 
+            pass

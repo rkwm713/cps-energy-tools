@@ -16,8 +16,8 @@ The investigation revealed two primary issues:
 
 1. **Inconsistent Router Prefix Configuration:**
    - In `mrr_process.py` and `spida.py`, the router was correctly defined with `prefix="/api"` but then endpoints were defined with paths like `/mrr-process`
-   - In `pole_compare.py`, the router was defined without a prefix (`router = APIRouter()`) but then the endpoint was defined with the full path `/api/pole-comparison` 
-   - This inconsistency led to route registration conflicts
+   - In `pole_compare.py`, `cover_sheet.py`, `qc.py`, and `exports.py`, the router was defined without a prefix (`router = APIRouter()`) but then the endpoints were defined with the full path like `/api/pole-comparison`
+   - This inconsistency led to route registration conflicts where FastAPI couldn't match the routes correctly
 
 2. **Double Registration of Routers:**
    - In `backend/main.py`, the MRR router was being registered twice:
@@ -28,8 +28,13 @@ The investigation revealed two primary issues:
 ## Fixes Applied
 
 1. **Standardized Router Configurations:**
-   - Updated `pole_compare.py` to use `router = APIRouter(prefix="/api")` like the other routers
-   - Fixed route path in `pole_compare.py` to use just `/pole-comparison` instead of `/api/pole-comparison`
+   - Updated all routers to consistently use `router = APIRouter(prefix="/api")`
+   - Fixed route paths in all router files to use only their specific part (e.g., `/pole-comparison` instead of `/api/pole-comparison`)
+   - Updated the following files:
+     - `pole_compare.py`
+     - `cover_sheet.py`
+     - `qc.py`
+     - `exports.py`
    - This ensures consistent route registration patterns across all routers
 
 2. **Eliminated Double Registration:**
@@ -42,6 +47,9 @@ The investigation revealed two primary issues:
      - `/api/mrr-debug` and `/api/mrr-routes` 
      - `/api/spida-debug` and `/api/spida-routes`
      - `/api/pole-compare-debug` and `/api/pole-compare-routes`
+     - `/api/cover-sheet-debug` and `/api/cover-sheet-routes`
+     - `/api/qc-debug` and `/api/qc-routes`
+     - `/api/exports-debug` and `/api/exports-routes`
    - Added a global route listing endpoint to the main app: `/debug-all-routes`
 
 4. **Created Testing Script:**
