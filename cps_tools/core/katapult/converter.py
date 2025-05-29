@@ -43,13 +43,18 @@ def convert_katapult_to_spidacalc(kat_json: dict[str, Any], job_id: str, job_nam
     # Extract attachments first so we can use that information for node filtering
     attachments_map = extract_attachments(kat_json)
     
-    # Keep only nodes that either have attachments or have a SCID attribute
-    filtered_nodes = {
-        nid: node
-        for nid, node in nodes.items()
-        if nid in attachments_map or (node.get("attributes") or {}).get("scid")
-    }
-    
+    # Keep only nodes that either have attachments (lookup by SCID) or have an explicit SCID attribute
+    filtered_nodes = {}
+    for nid, node in nodes.items():
+        raw_scid_val = (node.get("attributes") or {}).get("scid")
+        this_scid = normalize_scid(raw_scid_val) or nid  # Fallback to node id
+
+        has_atts = this_scid in attachments_map and len(attachments_map[this_scid]) > 0
+        has_scid_attr = raw_scid_val is not None
+
+        if has_atts or has_scid_attr:
+            filtered_nodes[nid] = node
+
     # Log the filtering results
     print(f"  Found {len(nodes)} total nodes, retaining {len(filtered_nodes)} for export")
     for nid in set(nodes.keys()) - set(filtered_nodes.keys()):

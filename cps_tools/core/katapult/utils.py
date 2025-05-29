@@ -20,12 +20,13 @@ _FT_TO_M: float = 0.3048  # feet → metres
 
 # Load both insulator_specs (legacy) and engineering_templates (new format)
 _INSULATOR_SPECS_PATH = Path(__file__).resolve().parents[3] / "api" / "data" / "insulator_specs.json"
-_ENGINEERING_TEMPLATES_PATH = Path(__file__).resolve().parents[3] / "api" / "data" / "engineering_templates.json"
+_ROOT_ENGINEERING_TEMPLATES_PATH = Path(__file__).resolve().parents[3] / "engineering_templates.json"
+_ENGINEERING_TEMPLATES_FALLBACK_PATH = Path(__file__).resolve().parents[3] / "api" / "data" / "engineering_templates.json"
 
 # Legacy insulator specs
 insulator_specs: dict | list = {}
 
-# New engineering templates
+# New engineering templates (will be loaded from root path if available)
 engineering_templates: Dict[str, Dict] = {
     "insulators": {},
     "wires": {}
@@ -44,18 +45,42 @@ except json.JSONDecodeError as _err:
         f"[katapult.utils] Warning – failed to parse insulator_specs.json: {_err}. 'insulator_specs' will be empty."
     )
 
-# Load new engineering templates
-try:
-    with _ENGINEERING_TEMPLATES_PATH.open(encoding="utf-8") as _f:
-        engineering_templates = json.load(_f)
-except FileNotFoundError:
-    print(
-        f"[katapult.utils] Warning – engineering_templates.json not found at {_ENGINEERING_TEMPLATES_PATH}."
-    )
-except json.JSONDecodeError as _err:
-    print(
-        f"[katapult.utils] Warning – failed to parse engineering_templates.json: {_err}."
-    )
+# Load engineering templates – prefer project root file, fall back to api/data
+_template_paths = [
+    _ROOT_ENGINEERING_TEMPLATES_PATH,
+    _ENGINEERING_TEMPLATES_FALLBACK_PATH,
+]
+
+_loaded_from: Path | None = None
+
+for _p in _template_paths:
+    if _p.exists():
+        try:
+            with _p.open(encoding="utf-8") as _f:
+                engineering_templates = json.load(_f)
+                _loaded_from = _p
+                print(f"[katapult.utils] Loaded engineering templates from {_p}")
+                break
+        except json.JSONDecodeError as _err:
+            print(f"[katapult.utils] Warning – failed to parse engineering_templates.json at {_p}: {_err}.")
+
+# If we loaded the root file but it doesn't define the usual PHASE wires, merge in fallback wires
+if _loaded_from == _ROOT_ENGINEERING_TEMPLATES_PATH:
+    try:
+        with _ENGINEERING_TEMPLATES_FALLBACK_PATH.open(encoding="utf-8") as _f_fb:
+            _fb_templates = json.load(_f_fb)
+            # Merge wires dict – keep any existing keys in root template, add missing primary/common keys
+            root_wires = engineering_templates.setdefault("wires", {})
+            for _k, _v in _fb_templates.get("wires", {}).items():
+                if _k not in root_wires:
+                    root_wires[_k] = _v
+    except FileNotFoundError:
+        pass
+    except json.JSONDecodeError as _err:
+        print(f"[katapult.utils] Warning – failed to merge fallback wires: {_err}")
+
+if _loaded_from is None:
+    print("[katapult.utils] Warning – engineering_templates.json not found in any expected location")
 
 def select_insulator(insulator_type: str, phase: Optional[str] = None, voltage: str = "13.2") -> Dict:
     """Select an appropriate insulator based on type, phase, and voltage level.
