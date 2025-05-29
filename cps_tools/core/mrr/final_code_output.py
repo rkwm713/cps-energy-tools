@@ -1,5 +1,100 @@
-import tkinter as tk
-from tkinter import ttk, messagebox, filedialog
+# ---------------------------------------------------------------------------
+# Optional Tkinter import – provide *headless* stubs when the GUI toolkit is
+# unavailable (e.g. on a Heroku or Docker server).  This ensures importing the
+# module does not fail which would otherwise prevent FastAPI from registering
+# the MRR routes, resulting in a *405 Method Not Allowed* error for
+# ``POST /api/mrr-process``.
+# ---------------------------------------------------------------------------
+
+from __future__ import annotations
+
+import sys
+import types
+
+
+try:
+    import tkinter as tk  # type: ignore
+    from tkinter import ttk, messagebox, filedialog  # type: ignore
+
+    # Some headless Linux builds provide the *tkinter* module but lack an X11
+    # display – instantiating ``Tk()`` would then raise ``TclError``.  We guard
+    # against this by doing a minimal, hidden initialisation test.  If that
+    # fails we fall back to the dummy stubs below.
+    try:
+        _test_root = tk.Tk()
+        _test_root.withdraw()  # Hide the window immediately
+        _test_root.destroy()
+    except Exception:  # noqa: BLE001 – broad except OK for headless guard
+        raise ImportError("tkinter is present but unusable in this environment")
+
+except Exception:  # noqa: BLE001 – any import/setup failure switches to stubs
+    tk = types.ModuleType("tkinter")  # type: ignore
+    sys.modules["tkinter"] = tk  # Register dummy so future imports succeed
+
+    class _DummyWidget:  # pylint: disable=too-few-public-methods
+        """Very small shim that no-ops all widget calls used in this module."""
+
+        def __init__(self, *args, **kwargs):
+            pass
+
+        # Common widget methods used in *final_code_output.py*
+        def grid(self, *args, **kwargs):  # noqa: D401, ANN001
+            return None
+
+        def grid_remove(self, *args, **kwargs):  # noqa: D401, ANN001
+            return None
+
+        def insert(self, *args, **kwargs):  # noqa: D401, ANN001
+            return None
+
+        def configure(self, *args, **kwargs):  # noqa: D401, ANN001
+            return None
+
+        # Allow attribute access without raising
+        def __getattr__(self, _name):  # noqa: D401, ANN001
+            return self.__class__()
+
+
+    class _DummyTk(_DummyWidget):  # pylint: disable=too-few-public-methods
+        """Stub replacement for ``tkinter.Tk`` in headless mode."""
+
+        def title(self, *args, **kwargs):  # noqa: D401, ANN001
+            pass
+
+        def geometry(self, *args, **kwargs):  # noqa: D401, ANN001
+            pass
+
+        def mainloop(self, *args, **kwargs):  # noqa: D401, ANN001
+            pass
+
+
+    class _StringVar:  # pylint: disable=too-few-public-methods
+        """Minimal replacement for ``tkinter.StringVar``."""
+
+        def __init__(self, *args, **kwargs):
+            self._value: str | None = None
+
+        def set(self, value):  # noqa: ANN001
+            self._value = value
+
+        def get(self):  # noqa: D401
+            return self._value
+
+
+    # Populate the dummy *tk* module with required attributes
+    tk.Tk = _DummyTk  # type: ignore[attr-defined]
+    tk.StringVar = _StringVar  # type: ignore[attr-defined]
+    tk.Text = _DummyWidget  # type: ignore[attr-defined]
+    tk.END = "end"  # type: ignore[attr-defined]
+
+    # Provide minimal stand-ins for ttk / messagebox / filedialog
+    ttk = types.SimpleNamespace(Label=_DummyWidget, Entry=_DummyWidget, Button=_DummyWidget)
+    messagebox = types.SimpleNamespace(showinfo=lambda *a, **k: None, showerror=lambda *a, **k: None)
+    filedialog = types.SimpleNamespace(askopenfilename=lambda *a, **k: "")
+
+    # Re-export so ``from tkinter import ttk`` style imports do not fail
+    sys.modules["tkinter.ttk"] = ttk  # type: ignore
+
 import pandas as pd
 import json
 import datetime
