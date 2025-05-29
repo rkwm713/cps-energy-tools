@@ -441,7 +441,17 @@ def extract_attachments(kata_json: dict[str, Any]) -> dict[str, list[dict[str, A
         for category in ["wire", "equipment", "guying"]:
             category_data = photofirst_data.get(category, {})
             for item_id, item in category_data.items():
+                # Try multiple potential height keys – typical exports use *_measured_height* (feet)
+                # but occasionally we only have *height* (feet) or *height_m* (metres).
                 height_ft = _safe_float(item.get("_measured_height"))
+                if height_ft is None:
+                    height_ft = _safe_float(item.get("height"))
+                # If we have a metric value convert to feet so the rest of the pipeline stays consistent
+                if height_ft is None and item.get("height_m") is not None:
+                    try:
+                        height_ft = float(item.get("height_m")) / _FT_TO_M
+                    except (ValueError, TypeError):
+                        height_ft = None
                 if height_ft is None:
                     continue
                 
