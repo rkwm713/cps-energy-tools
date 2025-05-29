@@ -36,6 +36,22 @@ def convert_katapult_to_spidacalc(kat_json: dict[str, Any], job_id: str, job_nam
     raw_nodes = kat_json.get("nodes") or kat_json.get("data", {}).get("nodes", {})
     nodes = _ensure_dict(raw_nodes, key_field="id", name="nodes")
 
+    # Only keep the node types we care about:
+    ALLOWED_NODE_TYPES = {"pole", "Power", "Power Transformer", "Joint", "Joint Transformer"}
+    filtered_nodes: dict[str, Any] = {}
+    for nid, node in nodes.items():
+        # Katapult stores the type in attributes.nodeType.value
+        node_type = (
+            (node.get("attributes", {}) or {})
+                .get("nodeType", {})
+                .get("value", "")
+        )
+        if node_type in ALLOWED_NODE_TYPES:
+            filtered_nodes[nid] = node
+        else:
+            print(f"  Skipping node {nid} of type '{node_type}'")
+    nodes = filtered_nodes
+
     # Extract pole measurements & relationships ---------------------------------
     scid_map, pole_details = extract_pole_details(kat_json)
 
