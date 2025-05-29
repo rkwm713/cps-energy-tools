@@ -36,6 +36,41 @@ except json.JSONDecodeError as _err:
     )
 
 
+# SCID normalization --------------------------------------------------------
+
+def normalize_scid(raw_scid: Any) -> str | None:
+    """Normalize SCID to ensure consistent format across the pipeline.
+    
+    Parameters
+    ----------
+    raw_scid : Any
+        The raw SCID value from Katapult JSON (could be string, int, dict, etc.)
+    
+    Returns
+    -------
+    str | None
+        Normalized SCID string, or None if invalid
+    """
+    if raw_scid is None:
+        return None
+    
+    # If it's a dict with 'value' key (common in Katapult attributes)
+    if isinstance(raw_scid, dict) and 'value' in raw_scid:
+        raw_scid = raw_scid['value']
+    
+    # Convert to string and strip whitespace
+    scid = str(raw_scid).strip()
+    
+    # Return None for empty strings
+    if not scid:
+        return None
+        
+    # Additional normalization can be added here as needed
+    # (e.g., remove prefixes, handle special characters)
+    
+    return scid
+
+
 # Collection normaliser ------------------------------------------------------
 
 def _ensure_dict(collection: Any, key_field: str = "id", name: str = "collection") -> dict:
@@ -104,15 +139,24 @@ def extract_pole_details(kat_json: dict):
         name="connections",
     )
 
-    # Map node_id → SCID (structureId)
+    # Map node_id → SCID (structureId) using normalized SCIDs
     scid_map: dict[str, str] = {}
     for node_id, node in nodes.items():
         attrs = node.get("attributes", {}) or {}
-        scid = (
-            attrs.get("scid", {}).get("value") if isinstance(attrs.get("scid"), dict) else attrs.get("scid")
-        )
+        
+        # Try multiple paths to find SCID
+        scid = None
+        if isinstance(attrs.get("scid"), dict):
+            scid = attrs.get("scid", {}).get("value")
+        else:
+            scid = attrs.get("scid")
         scid = scid or attrs.get("SCID") or node.get("id") or node_id
-        scid_map[node_id] = str(scid)
+        
+        # Normalize the SCID
+        normalized = normalize_scid(scid)
+        if normalized:
+            scid_map[node_id] = normalized
+            print(f"  Node {node_id} -> SCID '{normalized}'")
 
     # 1) Gather raw measurements per node -----------------------------------
     details: dict[str, dict] = {}
@@ -123,11 +167,20 @@ def extract_pole_details(kat_json: dict):
         pt = node.get("pole_top", {}).get(nid)
         if pt and "_measured_height" in pt:
             d["poleHeight"] = float(pt["_measured_height"]) * _FT_TO_M
+            print(f"  Node {nid}: pole height = {pt['_measured_height']} ft -> {d['poleHeight']:.2f} m")
+        else:
+            # Default pole height
+            d["poleHeight"] = 40.0 * _FT_TO_M
+            print(f"  Node {nid}: using default pole height 40 ft -> {d['poleHeight']:.2f} m")
 
         # GLC ----------------------------------------------------------------
         gm = node.get("ground_marker", {}).get("auto_added")
         if gm and "_measured_height" in gm:
             d["groundLineClearance"] = float(gm["_measured_height"]) * _FT_TO_M
+        else:
+            # Default GLC
+            d["groundLineClearance"] = 15.0 * _FT_TO_M
+            print(f"  Node {nid}: using default GLC 15 ft")
 
         # Anchors ------------------------------------------------------------
         anchors: list[dict] = []
@@ -174,4 +227,5 @@ __all__ = [
     "_ensure_dict",
     "extract_pole_details",
     "insulator_specs",
-] 
+    "normalize_scid",
+]

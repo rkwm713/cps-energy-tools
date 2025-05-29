@@ -58,6 +58,12 @@ def _seed_insulators(spida_project: Dict[str, Any], attachments_by_scid: Dict[st
     for lead in spida_project.get("leads", []):
         for loc in lead.get("locations", []):
             scid = str(loc.get("poleId"))
+            
+            # Debug logging
+            print(f"  Looking up SCID '{scid}' in attachments_by_scid")
+            attachments = attachments_by_scid.get(scid, [])
+            print(f"    Found {len(attachments)} attachments")
+            
             designs = loc.get("designs", [])
             if not designs:
                 continue
@@ -154,14 +160,32 @@ async def spida_import(
     nodes = kata_json.get("nodes", {}) or kata_json.get("data", {}).get("nodes", {})
     connections = kata_json.get("connections", {}) or kata_json.get("data", {}).get("connections", {})
 
-    attachments = extract_attachments(nodes, connections)
+    # Pass the full kata_json to extract_attachments so it can access photos
+    attachments = extract_attachments(kata_json)
 
     # ------------------------------------------------------------------
     # 3) Build SPIDA project & seed insulators
     # ------------------------------------------------------------------
     try:
         spida_project = convert_katapult_to_spidacalc(kata_json, job_id, job_name)
+        
+        # Debug logging for attachments
+        from pprint import pformat
+        print("\n=== Attachments by SCID ===")
+        for scid, atts in attachments.items():
+            print(f"  SCID {scid}: {len(atts)} attachments")
+            if atts:
+                print(f"    Sample: {pformat(atts[0])}")
+        
         spida_project = _seed_insulators(spida_project, attachments)
+        
+        # Debug logging for insulators after seeding
+        print("\n=== Full SPIDA Project insulators ===")
+        for lead in spida_project.get("leads", []):
+            for loc in lead.get("locations", []):
+                struct = loc["designs"][0]["structure"]
+                print(f"  SCID {loc['poleId']}: {len(struct.get('insulators', []))} insulators")
+                
     except Exception as exc:  # noqa: BLE001
         raise HTTPException(status_code=500, detail=f"Conversion failed: {exc}") from exc
 
