@@ -399,13 +399,25 @@ def extract_attachments(kata_json: dict[str, Any]) -> dict[str, list[dict[str, A
         for photo_id, photo_ref in node_photos.items():
             if not isinstance(photo_ref, dict):
                 continue
-            if photo_ref.get("association") or photo_ref.get("association_type") in ("auto","main"):
+            assoc = photo_ref.get("association")
+            assoc_type = photo_ref.get("association_type")
+            # Accept multiple variants – boolean True, the string "main", or "auto" (Katapult auto-selection)
+            if (
+                assoc is True
+                or (isinstance(assoc, str) and assoc.lower() == "main")
+                or (isinstance(assoc_type, str) and assoc_type.lower() in ("main", "auto"))
+            ):
                 main_photo_id = photo_id
                 break
-                
+        
+        # Fallback: if no explicit main, just pick the first available photo
         if not main_photo_id:
-            print(f"  Node {node_id}: No main photo found")
-            continue
+            main_photo_id = next(iter(node_photos.keys()), None)
+            if main_photo_id:
+                print(f"  Node {node_id}: Using first photo {main_photo_id} as fallback main")
+            else:
+                print(f"  Node {node_id}: No photos available after fallback")
+                continue
             
         # Get the actual photo data
         if main_photo_id not in photos:
