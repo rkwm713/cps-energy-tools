@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <!-- Gear -->
+  <path d="M 620 320 L 660 320 Q 700 320 700 360 L 700 400 Q 700 440 660 440 L 620 440 L 600 480 L 630 510 Q 660 540 640 570 L 610 600 Q 580 620 550 590 L 520 560 L 480 580 L 480 620 Q 480 660 440 660 L 400 660 Q 360 660 360 620 L 360 580 L 320 560 L 290 590 Q 260 620 230 600 L 200 570 Q 180 540 210 510 L 240 480 L 220 440 L 180 440 Q 140 440 140 400 L 140 360 Q 140 320 180 320 L 220 320 L 240 280 L 210 250 Q 180 220 200 190 L 230 160 Q 260 140 290 170 L 320 200 L 360 180 L 360 140 Q 360 100 400 100 L 440 100 Q 480 100 480 140 L 480 180 L 520 200 L 550 170 Q 580 140 610 160 L 640 190 Q 660 220 630 250 L 600 280 L 620 320 Z" fill="#3871b6" stroke="#2a5a8f" stroke-width="4"/>
+  
+  <!-- Clipboard -->
+  <path d="M 200 160 Q 200 120 240 120 L 320 120 L 320 80 Q 320 60 340 60 L 460 60 Q 480 60 480 80 L 480 120 L 560 120 Q 600 120 600 160 L 600 680 Q 600 720 560 720 L 240 720 Q 200 720 200 680 L 200 160 Z" fill="#3871b6" stroke="#2a5a8f" stroke-width="8"/>
+  
+  <!-- Clipboard hole -->
+  <circle cx="400" cy="90" r="20" fill="#ffffff"/>
+  
+  <!-- Clipboard paper -->
+  <rect x="250" y="180" width="300" height="480" rx="10" fill="#ffffff"/>
+  
+  <!-- Checkmarks -->
+  <path d="M 280 320 L 310 350 L 370 290" fill="none" stroke="#3871b6" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 280 420 L 310 450 L 370 390" fill="none" stroke="#3871b6" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 280 520 L 310 550 L 370 490" fill="none" stroke="#3871b6" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Lines -->
+  <rect x="400" y="310" width="120" height="20" rx="10" fill="#3871b6"/>
+  <rect x="400" y="410" width="120" height="20" rx="10" fill="#3871b6"/>
+  <rect x="400" y="510" width="120" height="20" rx="10" fill="#3871b6"/>
+</svg>

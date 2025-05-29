@@ -46,6 +46,11 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ mode, onToggleMode }) => {
     <>
       <AppBar position="static" color="primary" enableColorOnDark>
         <Toolbar>
+          <img 
+            src="/cps-tools-logo.svg" 
+            alt="CPS Energy Tools Logo" 
+            style={{ height: '40px', marginRight: '16px' }}
+          />
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             CPS Energy Tools
           </Typography>
